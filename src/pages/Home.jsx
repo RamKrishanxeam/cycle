@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import Layout from "../layout/Layout";
 import Banner from "./Banner";
-import Login from "./Login";
 
 const Home = () => {
   return (
