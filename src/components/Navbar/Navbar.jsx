@@ -1,10 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
-import { useState } from "react";
+import { useEffect } from "react";
 
 const Navbar = () => {
-  const PathLoction = window.location.pathname;
+  const navigate = useNavigate();
 
+  const PathLoction = window.location.pathname;
+  const useraccessToken = localStorage.getItem("user");
+  const logout = () => {
+    localStorage.getItem("user");
+    localStorage.clear();
+  };
+
+  // useEffect(() => {
+  //   if (useraccessToken == null) {
+  //     navigate("/login");
+  //   }
+  // }, [useraccessToken]);
   return (
     <>
       <div
@@ -76,11 +88,20 @@ const Navbar = () => {
                   </span>
                 </div>
                 <div className="person">
-                  <Link to="/login">
-                    <span className="material-symbols-outlined text-reddish-orange fw-bolder">
-                      person
+                  {useraccessToken ? (
+                    <span
+                      onClick={logout}
+                      className="material-symbols-outlined text-reddish-orange fw-bolder"
+                    >
+                      logout
                     </span>
-                  </Link>
+                  ) : (
+                    <Link to="/login">
+                      <span className="material-symbols-outlined text-reddish-orange fw-bolder">
+                        person
+                      </span>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
