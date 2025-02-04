@@ -1,14 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
 import { useEffect } from "react";
+import { auth } from "../../config/firebase";
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const PathLoction = window.location.pathname;
   const useraccessToken = localStorage.getItem("user");
+  const useraccessGoogle = localStorage.getItem("userGoogle");
+  const GoogleName = JSON.parse(useraccessGoogle);
   const logout = () => {
-    localStorage.getItem("user");
+    localStorage.getItem("userGoogle");
     localStorage.clear();
   };
 
@@ -88,9 +91,32 @@ const Navbar = () => {
                   </span>
                 </div>
                 <div className="person">
-                  {useraccessToken ? (
+                  {GoogleName?.displayName ? (
+                    <Link
+                      to=""
+                      className="text-white fw-bolder nav-link"
+                      onClick={() =>
+                        auth
+                          .signOut(auth)
+                          .then(() => {
+                            console.log("Sign-out successful");
+                            localStorage.getItem("user");
+                            localStorage.clear();
+                            window.location.reload();
+                          })
+                          .catch((error) => {
+                            console.log("An error happened");
+                          })
+                      }
+                    >
+                      {GoogleName.displayName}
+                    </Link>
+                  ) : useraccessToken ? (
                     <span
-                      onClick={logout}
+                      onClick={() => {
+                        logout();
+                        window.location.reload();
+                      }}
                       className="material-symbols-outlined text-reddish-orange fw-bolder"
                     >
                       logout

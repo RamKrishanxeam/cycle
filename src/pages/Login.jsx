@@ -3,10 +3,9 @@ import Layout from "../layout/Layout";
 import facebook from "../assets/images/facebook.svg";
 import google from "../assets/images/google.svg";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth, signInWithGooglePopup } from "../config/firebase";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
-import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,6 +23,13 @@ const Login = () => {
       });
   };
 
+  const logGoogleUser = async () => {
+    const response = await signInWithGooglePopup();
+    if (response.user.emailVerified) {
+      localStorage.setItem("userGoogle", JSON.stringify(response.user));
+      navigate("/");
+    }
+  };
 
   return (
     <>
@@ -137,13 +143,13 @@ const Login = () => {
                               </a>
                             </li>
                             <li className="social-item">
-                              <a href="">
+                              <Link to="" onClick={logGoogleUser}>
                                 <img
                                   src={google}
                                   alt="google"
                                   className="img-fluid"
                                 />
-                              </a>
+                              </Link>
                             </li>
                           </ul>
                         </div>
