@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, facebookAuth, signInWithGooglePopup } from "../config/firebase";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,28 +43,32 @@ const Login = () => {
     }
   };
 
-  //Function to login user
   const login = async (provider) => {
     try {
-      const result = await signInWithPopup(auth, provider);
-      console.log(result, "result");
+      const response = await signInWithPopup(auth, provider); // Using signInWithPopup with the passed provider
+      return response;
     } catch (e) {
       console.log(e);
     }
   };
-  const facebookUser = async () => {
-    const response = await login(facebookAuth);
-    console.log(response, "response");
 
-    // if (response.user.emailVerified) {
-    //   localStorage.setItem("userGoogle", JSON.stringify(response.user));
-    //   setSuccessMessage(
-    //     "Google Login successful! Welcome to the Firefox Tribe! 🚀"
-    //   );
-    //   setTimeout(() => navigate("/"), 2000);
-    // }
+  // //Facebook login function
+  const facebookUser = async () => {
+    const response = await login(facebookAuth); // pass facebookAuth to login function
+    console.log(response, "response");
   };
-  
+
+  useEffect(() => {
+    if (window.FB) {
+      window.FB.init({
+        appId: "your-facebook-app-id",
+        cookie: true,
+        xfbml: true,
+        version: "v10.0",
+      });
+    }
+  }, []);
+
   return (
     <>
       <Layout>

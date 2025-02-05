@@ -24,7 +24,7 @@ const firebaseConfig = {
 // select an account
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
-  prompt: "popup ",
+  prompt: "select_account ",
 });
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -32,4 +32,4 @@ const auth = getAuth(app);
 const facebookAuth = new FacebookAuthProvider();
 const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
-export { app, auth, signInWithGooglePopup, facebookAuth };
+export { app, auth, facebookAuth, signInWithGooglePopup };
