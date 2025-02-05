@@ -11,7 +11,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, facebookAuth, signInWithGooglePopup } from "../config/firebase";
+import { auth, signInWithGooglePopup } from "../config/firebase";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
 import { useState } from "react";
@@ -58,7 +58,8 @@ const Login = () => {
 
     signInWithPopup(auth, fbProvider)
       .then((result) => {
-        console.log(result);
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        console.log(credential);
       })
       .catch((error) => {
         console.error(error);
