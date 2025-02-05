@@ -1,32 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../layout/Layout";
 import facebook from "../assets/images/facebook.svg";
-import google from "../assets/images/google.svg";
-import {
-  FacebookAuthProvider,
-  getAuth,
-  GoogleAuthProvider,
-  linkWithCredential,
-  signInWithCredential,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import { auth, signInWithGooglePopup } from "../config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
 import { useState } from "react";
+import { GoogleLogin } from "../components/GoogleLogin/GoogleLogin";
+import { useAuth } from "../config/authProvider";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { successMessage, setSuccessMessage } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
   const signIn = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         if (user.accessToken) {
-          setErrorMessage(false);
           localStorage.setItem("user", user.accessToken);
           setSuccessMessage(
             "Login successful! Welcome to the Firefox Tribe! 🚀"
@@ -40,59 +32,6 @@ const Login = () => {
       });
   };
 
-  const logGoogleUser = async () => {
-    const response = await signInWithGooglePopup();
-    if (response.user.emailVerified) {
-      localStorage.setItem("userGoogle", JSON.stringify(response.user));
-      setSuccessMessage(
-        "Google Login successful! Welcome to the Firefox Tribe! 🚀"
-      );
-      setTimeout(() => navigate("/"), 2000);
-    }
-  };
-
-  const signInWithFacebook = () => {
-    const auth = getAuth();
-    const fbProvider = new FacebookAuthProvider();
-
-    signInWithPopup(auth, fbProvider)
-      .then((result) => {
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        console.log(credential);
-
-        const user = result.user;
-        if (auth.currentUser && auth.currentUser.providerData.length > 0) {
-          linkWithCredential(auth.currentUser, credential)
-            .then(() => {
-              console.log("Account successfully linked");
-            })
-            .catch((linkError) => {
-              console.error("Error linking accounts:", linkError);
-              if (
-                linkError.code ===
-                "auth/account-exists-with-different-credential"
-              ) {
-                const email = linkError.email;
-                const providerId = linkError.providerId;
-                console.log(
-                  `Email exists with a different provider: ${email} (${providerId})`
-                );
-              }
-            });
-        }
-      })
-      .catch((error) => {
-        console.error("Facebook Sign-In Error:", error);
-        if (error.code === "auth/account-exists-with-different-credential") {
-          const email = error.email;
-          const providerId = error.providerId;
-          const pendingCredential = error.credential;
-          console.log(
-            `Email exists with a different provider: ${email} (${providerId})`
-          );
-        }
-      });
-  };
   return (
     <>
       <Layout>
@@ -206,7 +145,7 @@ const Login = () => {
                           </label>
                           <ul className="social-list">
                             <li className="social-item">
-                              <Link to="" onClick={signInWithFacebook}>
+                              <Link to="">
                                 <img
                                   src={facebook}
                                   alt="facebook"
@@ -215,13 +154,7 @@ const Login = () => {
                               </Link>
                             </li>
                             <li className="social-item">
-                              <Link to="" onClick={logGoogleUser}>
-                                <img
-                                  src={google}
-                                  alt="google"
-                                  className="img-fluid"
-                                />
-                              </Link>
+                              <GoogleLogin />
                             </li>
                           </ul>
                         </div>
