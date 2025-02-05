@@ -6,19 +6,28 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, signInWithGooglePopup } from "../config/firebase";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const signIn = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         if (user.accessToken) {
+          setErrorMessage(false);
           localStorage.setItem("user", user.accessToken);
-          navigate("/");
+          setSuccessMessage(
+            "Login successful! Welcome to the Firefox Tribe! 🚀"
+          );
+          setTimeout(() => navigate("/"), 2000);
         }
       })
       .catch((error) => {
+        setErrorMessage("Invalid login. Please try again or register! 🚀");
         console.log(error, "errorMessage");
       });
   };
@@ -27,7 +36,10 @@ const Login = () => {
     const response = await signInWithGooglePopup();
     if (response.user.emailVerified) {
       localStorage.setItem("userGoogle", JSON.stringify(response.user));
-      navigate("/");
+      setSuccessMessage(
+        "Google Login successful! Welcome to the Firefox Tribe! 🚀"
+      );
+      setTimeout(() => navigate("/"), 2000);
     }
   };
 
@@ -68,6 +80,16 @@ const Login = () => {
                       handleSubmit,
                     }) => (
                       <form onSubmit={handleSubmit}>
+                        {errorMessage && (
+                          <div className="alert alert-danger py-2 d-inline-block">
+                            {errorMessage}
+                          </div>
+                        )}
+                        {successMessage && (
+                          <div className="alert alert-success py-2 d-inline-block">
+                            {successMessage}
+                          </div>
+                        )}
                         <div className="mb-3">
                           <label className="form-label">Email</label>
                           <input
