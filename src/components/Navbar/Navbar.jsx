@@ -1,25 +1,30 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
-import { useEffect } from "react";
 import { auth } from "../../config/firebase";
+import { useState } from "react";
 
 const Navbar = () => {
-  // const navigate = useNavigate();
-
+  const [showMenu, setShowMenu] = useState(false);
   const PathLoction = window.location.pathname;
   const useraccessToken = localStorage.getItem("user");
   const useraccessGoogle = localStorage.getItem("userGoogle");
   const GoogleName = JSON.parse(useraccessGoogle);
-  const logout = () => {
-    localStorage.getItem("userGoogle");
-    localStorage.clear();
-  };
 
-  // useEffect(() => {
-  //   if (useraccessToken == null) {
-  //     navigate("/login");
-  //   }
-  // }, [useraccessToken]);
+  console.log(showMenu, "showMenu");
+
+  const handleLogout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        console.log("Sign-out successful");
+        localStorage.clear();
+        localStorage.getItem("userGoogle");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log("An error happened", error);
+      });
+  };
   return (
     <>
       <div
@@ -90,43 +95,47 @@ const Navbar = () => {
                     shopping_cart
                   </span>
                 </div>
-                <div className="person">
-                  {GoogleName?.displayName ? (
-                    <Link
-                      to=""
-                      className="text-white fw-bolder nav-link"
-                      onClick={() =>
-                        auth
-                          .signOut(auth)
-                          .then(() => {
-                            console.log("Sign-out successful");
-                            localStorage.getItem("user");
-                            localStorage.clear();
-                            window.location.reload();
-                          })
-                          .catch((error) => {
-                            console.log("An error happened");
-                          })
-                      }
-                    >
-                      {GoogleName.displayName}
-                    </Link>
+                <div className="person position-relative">
+                  {GoogleName?.photoURL ? (
+                    <div className="logout-menu-container">
+                      <Link
+                        to="#"
+                        className="profile-icon"
+                        onClick={() => setShowMenu(!showMenu)}
+                      >
+                        <img
+                          src={
+                            GoogleName.photoURL ||
+                            "https://via.placeholder.com/96"
+                          }
+                          alt="GoogleName"
+                          className="img-fluid rounded-pill"
+                          style={{ width: "30px" }}
+                        />
+                      </Link>
+                    </div>
                   ) : useraccessToken ? (
-                    <span
-                      onClick={() => {
-                        logout();
-                        window.location.reload();
-                      }}
-                      className="material-symbols-outlined text-reddish-orange fw-bolder"
-                    >
-                      logout
-                    </span>
+                    <>
+                      <span
+                        onClick={() => setShowMenu(!showMenu)}
+                        className="material-symbols-outlined text-reddish-orange fw-bolder"
+                      >
+                        logout
+                      </span>
+                    </>
                   ) : (
                     <Link to="/login">
                       <span className="material-symbols-outlined text-reddish-orange fw-bolder">
                         person
                       </span>
                     </Link>
+                  )}
+                  {showMenu && (
+                    <div className="logout-menu">
+                      <button className="logout-btn" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

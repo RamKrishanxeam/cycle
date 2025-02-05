@@ -224,3 +224,43 @@ body {
 .error-message span {
   color: #a80000;
 }
+
+.logout-menu-container {
+  position: relative;
+  display: inline-block;
+}
+.profile-icon img {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-icon:hover img {
+  transform: scale(1.1);
+}
+
+.logout-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  box-shadow: 0 0 39px 14px rgba(0, 0, 0, 0.3);
+  background-image: linear-gradient(3deg, #2c2c2c 4%, #434548 79%);
+  border: 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.logout-btn {
+  padding: 3px 9px;
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
