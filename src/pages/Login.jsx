@@ -2,11 +2,19 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "../layout/Layout";
 import facebook from "../assets/images/facebook.svg";
 import google from "../assets/images/google.svg";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  FacebookAuthProvider,
+  getAuth,
+  GoogleAuthProvider,
+  linkWithCredential,
+  signInWithCredential,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, facebookAuth, signInWithGooglePopup } from "../config/firebase";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,32 +51,19 @@ const Login = () => {
     }
   };
 
-  const login = async (provider) => {
-    try {
-      const response = await signInWithPopup(auth, provider); // Using signInWithPopup with the passed provider
-      return response;
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const signInWithFacebook = () => {
+    const auth = getAuth();
 
-  // //Facebook login function
-  const facebookUser = async () => {
-    const response = await login(facebookAuth); // pass facebookAuth to login function
-    console.log(response, "response");
-  };
+    const fbProvider = new FacebookAuthProvider();
 
-  useEffect(() => {
-    if (window.FB) {
-      window.FB.init({
-        appId: "your-facebook-app-id",
-        cookie: true,
-        xfbml: true,
-        version: "v10.0",
+    signInWithPopup(auth, fbProvider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.error(error);
       });
-    }
-  }, []);
-
+  };
   return (
     <>
       <Layout>
@@ -182,7 +177,7 @@ const Login = () => {
                           </label>
                           <ul className="social-list">
                             <li className="social-item">
-                              <Link to="" onClick={facebookUser}>
+                              <Link to="" onClick={signInWithFacebook}>
                                 <img
                                   src={facebook}
                                   alt="facebook"
