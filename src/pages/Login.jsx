@@ -53,16 +53,46 @@ const Login = () => {
 
   const signInWithFacebook = () => {
     const auth = getAuth();
-
     const fbProvider = new FacebookAuthProvider();
 
     signInWithPopup(auth, fbProvider)
       .then((result) => {
         const credential = FacebookAuthProvider.credentialFromResult(result);
         console.log(credential);
+
+        // If the user is already signed in with another method and has the same email,
+        // we link their Facebook account to the existing account
+        const user = result.user;
+        const existingEmail = user.email;
+
+        if (existingEmail) {
+          // Check if the user is logged in with a different provider, like email/password
+          if (auth.currentUser && auth.currentUser.providerData.length > 0) {
+            // Try linking accounts with the Facebook credentials
+            linkWithCredential(auth.currentUser, credential)
+              .then(() => {
+                console.log("Account linked successfully");
+              })
+              .catch((linkError) => {
+                console.error("Error linking accounts:", linkError);
+              });
+          }
+        }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Facebook Sign-In Error:", error);
+        if (error.code === "auth/account-exists-with-different-credential") {
+          // Handle the case when the email is already associated with another provider
+          const email = error.email;
+          const pendingCredential = error.credential;
+          const providerId = error.providerId;
+          // You can guide the user to link accounts here
+          console.log(
+            "Email exists with different provider:",
+            email,
+            providerId
+          );
+        }
       });
   };
   return (
