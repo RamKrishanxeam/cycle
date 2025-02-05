@@ -2,8 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "../layout/Layout";
 import facebook from "../assets/images/facebook.svg";
 import google from "../assets/images/google.svg";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, signInWithGooglePopup } from "../config/firebase";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, facebookAuth, signInWithGooglePopup } from "../config/firebase";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
 import { useState } from "react";
@@ -43,6 +43,28 @@ const Login = () => {
     }
   };
 
+  //Function to login user
+  const login = async (provider) => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(result, "result");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const facebookUser = async () => {
+    const response = await login(facebookAuth);
+    console.log(response, "response");
+
+    // if (response.user.emailVerified) {
+    //   localStorage.setItem("userGoogle", JSON.stringify(response.user));
+    //   setSuccessMessage(
+    //     "Google Login successful! Welcome to the Firefox Tribe! 🚀"
+    //   );
+    //   setTimeout(() => navigate("/"), 2000);
+    // }
+  };
+  
   return (
     <>
       <Layout>
@@ -156,13 +178,13 @@ const Login = () => {
                           </label>
                           <ul className="social-list">
                             <li className="social-item">
-                              <a href="">
+                              <Link to="" onClick={facebookUser}>
                                 <img
                                   src={facebook}
                                   alt="facebook"
                                   className="img-fluid"
                                 />
-                              </a>
+                              </Link>
                             </li>
                             <li className="social-item">
                               <Link to="" onClick={logGoogleUser}>
