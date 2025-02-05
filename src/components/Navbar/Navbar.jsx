@@ -10,8 +10,6 @@ const Navbar = () => {
   const useraccessGoogle = localStorage.getItem("userGoogle");
   const GoogleName = JSON.parse(useraccessGoogle);
 
-  console.log(showMenu, "showMenu");
-
   const handleLogout = () => {
     auth
       .signOut()
