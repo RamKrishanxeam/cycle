@@ -1,17 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../layout/Layout";
 import facebook from "../assets/images/facebook.svg";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
 import { GoogleLogin } from "../components/GoogleLogin/GoogleLogin";
-import { useAuth } from "../config/authProvider";
 import { LoginandSignup } from "../components/Form/Form";
-import { useAuthFunctions } from "../config/apiConfig";
+import { loginUser } from "../lib/thunk/userThunk";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Login = () => {
-  const { successMessage, errorMessage } = useAuth();
-  const { signIn } = useAuthFunctions();
+  // const { errorMessage , } = useAuth();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, successMessage, errorMessage } = useSelector(
+    (state) => state.auth
+  );
 
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => navigate("/"), 1000);
+    }
+  }, [user, navigate]);
   return (
     <>
       <Layout>
@@ -27,7 +37,7 @@ const Login = () => {
                 validationSchema={LoginSchema}
                 onSubmit={(values) => {
                   const { email, password } = values;
-                  signIn(email, password);
+                  dispatch(loginUser({ email, password }));
                 }}
               >
                 {({
@@ -44,7 +54,7 @@ const Login = () => {
                         {errorMessage}
                       </div>
                     )}
-                    {successMessage && (
+                    {user !== null && successMessage && (
                       <div className="alert alert-success py-2 d-inline-block">
                         {successMessage}
                       </div>
