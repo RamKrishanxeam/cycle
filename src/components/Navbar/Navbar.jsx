@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
 import { auth } from "../../config/firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { userAction } from "../../lib/slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
+  const [sticky, setSticky] = useState("");
   const [showMenu, setShowMenu] = useState(false);
   const PathLoction = window.location.pathname;
   const useraccessGoogle = localStorage.getItem("userGoogle");
@@ -13,11 +14,23 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    window.addEventListener("scroll", isSticky);
+    return () => {
+      window.removeEventListener("scroll", isSticky);
+    };
+  }, []);
+  const isSticky = () => {
+    const stickyClass = window.scrollY >= 50 ? "is-sticky" : "";
+    setSticky(stickyClass);
+  };
   return (
     <>
       <div
         className={`${
-          PathLoction == "/" ? "navbar-section" : "navbar-section-others"
+          PathLoction == "/"
+            ? `${!sticky ? "navbar-section" : "is-sticky"}`
+            : "navbar-section-others"
         }`}
       >
         <nav className="navbar navbar-expand-lg w-100">
