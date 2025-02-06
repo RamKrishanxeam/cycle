@@ -27,11 +27,26 @@ body {
   transition: all 0.4s ease-in-out;
   z-index: 9;
 }
-.navbar-section .navbar-nav li .nav-link:hover {
+.is-sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  box-shadow: 0 2px 24px 0 rgb(0 0 0 / 15%);
+  background-color: #ffffff;
+  animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+}
+
+.navbar-section .navbar-nav li .nav-link:hover,
+.navbar-section-others .navbar-nav li .nav-link:hover,
+.is-sticky .navbar-nav li .nav-link:hover {
   transition: all 0.3s cubic-bezier(0, 0, 0.23, 1);
   background-position: 0%;
 }
-.navbar-section .navbar-nav li .nav-link {
+.navbar-section .navbar-nav li .nav-link,
+.navbar-section-others .navbar-nav li .nav-link,
+.is-sticky .navbar-nav li .nav-link {
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1.14px;
@@ -52,9 +67,11 @@ body {
   font-weight: 600;
   padding: 0 2rem 0rem 0rem;
 }
-.navbar-section-others {
+.navbar-section-others,
+.is-sticky {
   background: rgb(0, 0, 0);
 }
+
 .navbar-section-others .navbar-nav li .nav-link {
   color: #fff;
 }
@@ -62,27 +79,7 @@ body {
   transition: all 0.3s cubic-bezier(0, 0, 0.23, 1);
   background-position: 0%;
 }
-.navbar-section-others .navbar-nav li .nav-link {
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1.14px;
-  color: #fff;
-  cursor: pointer;
-  text-decoration: none;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(
-    to right,
-    #f8673b,
-    #f8673b 50%,
-    #ffffff 50%
-  );
-  background-size: 200% 100%;
-  background-position: 100%;
-  position: relative;
-  font-weight: 600;
-  padding: 0 2rem 0rem 0rem;
-}
+
 .text-reddish-orange {
   color: var(--main-reddish-orange);
 }
