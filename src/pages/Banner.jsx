@@ -33,6 +33,30 @@ function Banner() {
           <img src={image4} alt="MOF4_Desktop" className="w-100 h-auto" />
         </div>
       </Slider>
+      <div className="silder-name-icons">
+        <ul>
+          <li className="d-flex align-items-center justify-content-center">
+            Find My Bike
+            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+          </li>
+          <li className="d-flex align-items-center justify-content-center">
+            Upgrade My Bike
+            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+          </li>
+          <li className="d-flex align-items-center justify-content-center">
+            Bike Servicing
+            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+          </li>
+          <li className="d-flex align-items-center justify-content-center">
+            Bike Accessories
+            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+          </li>
+          <li className="d-flex align-items-center justify-content-center">
+            Bulk Order
+            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }
