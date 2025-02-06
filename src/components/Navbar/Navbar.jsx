@@ -2,27 +2,17 @@ import { Link } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
 import { auth } from "../../config/firebase";
 import { useState } from "react";
+import { userAction } from "../../lib/slice/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const PathLoction = window.location.pathname;
-  const useraccessToken = localStorage.getItem("user");
   const useraccessGoogle = localStorage.getItem("userGoogle");
   const GoogleName = JSON.parse(useraccessGoogle);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        console.log("Sign-out successful");
-        localStorage.clear();
-        localStorage.getItem("userGoogle");
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.log("An error happened", error);
-      });
-  };
   return (
     <>
       <div
@@ -94,7 +84,7 @@ const Navbar = () => {
                   </span>
                 </div>
                 <div className="person position-relative">
-                  {GoogleName?.photoURL ? (
+                  {GoogleName?.displayName ? (
                     <div className="logout-menu-container">
                       <Link
                         to="#"
@@ -112,7 +102,7 @@ const Navbar = () => {
                         />
                       </Link>
                     </div>
-                  ) : useraccessToken ? (
+                  ) : user !== null ? (
                     <>
                       <span
                         onClick={() => setShowMenu(!showMenu)}
@@ -128,9 +118,14 @@ const Navbar = () => {
                       </span>
                     </Link>
                   )}
-                  {showMenu && (
+                  {user !== null && showMenu && (
                     <div className="logout-menu">
-                      <button className="logout-btn" onClick={handleLogout}>
+                      <button
+                        className="logout-btn"
+                        onClick={() => {
+                          dispatch(userAction.logout());
+                        }}
+                      >
                         Logout
                       </button>
                     </div>

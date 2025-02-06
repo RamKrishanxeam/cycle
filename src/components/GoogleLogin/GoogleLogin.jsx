@@ -1,26 +1,23 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithGooglePopup } from "../../config/firebase";
 import google from "../../assets/images/google.svg";
-import { useAuth } from "../../config/authProvider";
+import { logGoogleUser } from "../../lib/thunk/userThunk";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export const GoogleLogin = () => {
-  const { setSuccessMessage } = useAuth();
-
+  // const { setSuccessMessage } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
-  const logGoogleUser = async () => {
-    const response = await signInWithGooglePopup();
-    if (response.user.emailVerified) {
-      localStorage.setItem("userGoogle", JSON.stringify(response.user));
-      setSuccessMessage(
-        "Google Login successful! Welcome to the Firefox Tribe! 🚀"
-      );
-      setTimeout(() => navigate("/"), 2000);
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => navigate("/"), 1000);
     }
-  };
+  }, [user, navigate]);
+
   return (
-    <Link to="" onClick={logGoogleUser}>
+    <Link to="" onClick={() => dispatch(logGoogleUser())}>
       <img src={google} alt="google" className="img-fluid" />
     </Link>
   );
