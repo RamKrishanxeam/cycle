@@ -21,7 +21,7 @@ const Navbar = () => {
     };
   }, []);
   const isSticky = () => {
-    const stickyClass = window.scrollY >= 50 ? "is-sticky" : "";
+    const stickyClass = window.scrollY >= 250 ? "is-sticky" : "";
     setSticky(stickyClass);
   };
   return (

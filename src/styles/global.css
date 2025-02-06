@@ -261,3 +261,32 @@ body {
   letter-spacing: 1px;
   font-size: 14px;
 }
+
+.silder-name-icons {
+  background-color: #e7e7e7;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3f4351;
+  width: 100%;
+}
+.silder-name-icons ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  gap: 30px;
+  padding: 20px 0px;
+  margin-top: -10px;
+}
+
+.exclusive-section-image img {
+  width: 250px;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid #e2e2e2;
+  padding: 5px;
+  margin: 10px;
+  display: inline-block;
+}
