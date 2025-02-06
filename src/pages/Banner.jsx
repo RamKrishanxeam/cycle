@@ -37,23 +37,33 @@ function Banner() {
         <ul>
           <li className="d-flex align-items-center justify-content-center">
             Find My Bike
-            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+            <span className="material-symbols-outlined fw-semibold">
+              arrow_forward_ios
+            </span>
           </li>
           <li className="d-flex align-items-center justify-content-center">
             Upgrade My Bike
-            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+            <span className="material-symbols-outlined fw-semibold">
+              arrow_forward_ios
+            </span>
           </li>
           <li className="d-flex align-items-center justify-content-center">
             Bike Servicing
-            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+            <span className="material-symbols-outlined fw-semibold">
+              arrow_forward_ios
+            </span>
           </li>
           <li className="d-flex align-items-center justify-content-center">
             Bike Accessories
-            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+            <span className="material-symbols-outlined fw-semibold">
+              arrow_forward_ios
+            </span>
           </li>
           <li className="d-flex align-items-center justify-content-center">
             Bulk Order
-            <span class="material-symbols-outlined fw-semibold">arrow_forward_ios</span>
+            <span className="material-symbols-outlined fw-semibold">
+              arrow_forward_ios
+            </span>
           </li>
         </ul>
       </div>
