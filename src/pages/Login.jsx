@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
 import { GoogleLogin } from "../components/GoogleLogin/GoogleLogin";
 import { LoginandSignup } from "../components/Form/Form";
-import { loginUser } from "../lib/thunk/userThunk";
+import { authUser } from "../lib/thunk/userThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -37,7 +37,7 @@ const Login = () => {
                 validationSchema={LoginSchema}
                 onSubmit={(values) => {
                   const { email, password } = values;
-                  dispatch(loginUser({ email, password }));
+                  // dispatch(authUser({ email, password }));
                 }}
               >
                 {({

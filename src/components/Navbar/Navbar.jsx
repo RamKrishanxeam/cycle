@@ -135,9 +135,9 @@ const Navbar = () => {
                     <div className="logout-menu">
                       <button
                         className="logout-btn"
-                        onClick={() => {
-                          dispatch(userAction.logout());
-                        }}
+                        // onClick={() => {
+                        //   dispatch(userAction.logout());
+                        // }}
                       >
                         Logout
                       </button>

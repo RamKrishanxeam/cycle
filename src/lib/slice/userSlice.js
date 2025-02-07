@@ -8,7 +8,7 @@ const initialState = {
   successMessage: null,
 };
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -62,4 +62,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const userAction = userSlice.actions;
+// export const userAction = userSlice.actions;
+export default userSlice;
