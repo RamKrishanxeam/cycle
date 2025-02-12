@@ -10,6 +10,7 @@ const persistConfig = {
 
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
 
+
 export const store = configureStore({
   reducer: {
     [userSlice.name]: persistedUserReducer,
