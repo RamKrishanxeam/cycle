@@ -29,6 +29,8 @@ const userSlice = createSlice({
       localStorage.removeItem("user");
       localStorage.removeItem("userGoogle");
       state.user = null;
+      state.successMessage = null;
+      state.errorMessage = null;
       state.accessToken = null;
       state.refreshToken = null;
       localStorage.clear();
