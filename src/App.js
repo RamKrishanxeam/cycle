@@ -11,7 +11,7 @@ export default function App() {
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="delete-data" element={<DataDeletion />} />
+        <Route path="Bikes" element={<DataDeletion />} />
         <Route path="/" element={<Home />}></Route>
       </Routes>
     </BrowserRouter>
