@@ -56,7 +56,7 @@ const Navbar = () => {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="/delete-data"
+                    to="/Bikes"
                   >
                     Bikes
                   </Link>
