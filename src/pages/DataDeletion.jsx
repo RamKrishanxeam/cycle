@@ -3,7 +3,6 @@ import Layout from "../layout/Layout";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 
-
 const DataDeletion = () => {
   // const [leftWidth, setLeftWidth] = useState(50); // Default: 50% width
   // const [isResizing, setIsResizing] = useState(false);
