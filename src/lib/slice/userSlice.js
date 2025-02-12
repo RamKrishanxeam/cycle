@@ -20,11 +20,11 @@ const userSlice = createSlice({
         loading: action.payload,
       };
     },
-    setCredentials: (state, action) => {
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.user = action.payload.user;
-    },
+    // setCredentials: (state, action) => {
+    //   state.accessToken = action.payload.accessToken;
+    //   state.refreshToken = action.payload.refreshToken;
+    //   state.user = action.payload.user;
+    // },
     logout: (state) => {
       localStorage.removeItem("user");
       localStorage.removeItem("userGoogle");
@@ -37,6 +37,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     // login
     builder.addCase(authUser.pending, (state, action) => {
+      state.user = null;
       state.loading = true;
       state.errorMessage = null;
       state.successMessage = null;
@@ -46,8 +47,11 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.successMessage =
         "Login successful! Welcome to the Firefox Tribe! 🚀";
+      localStorage.setItem("accessToken", action.payload.accessToken);
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
     });
     builder.addCase(authUser.rejected, (state, action) => {
+      state.user = null;
       state.loading = false;
       state.errorMessage = "Invalid login. Please try again or register! 🚀";
     });
@@ -72,5 +76,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout } = userSlice.actions;
+export const { logout } = userSlice.actions;
 export default userSlice;

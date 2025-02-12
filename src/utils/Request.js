@@ -7,8 +7,7 @@ export const api = axios.create({
 });
 api.interceptors.request.use(
   async (config) => {
-    const { store } = require("../lib/store");
-    const { accessToken } = store.getState();
+    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -18,22 +17,34 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  async (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.request.use(
+  (response) => {
+    return response;
+  },
   async (error) => {
     const { store } = require("../lib/store");
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
+
+    let originRequest = error.config;
+    if (error.response.status === 401 && !originRequest.retry) {
+      originRequest.retry = true;
+      const refreshTokenAuth = localStorage.getItem("refreshToken");
+      if (refreshTokenAuth) {
         const newAccessToken = store.dispatch(refreshToken()).unwrap();
-        api.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${newAccessToken}`;
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        return api(originalRequest);
-      } catch (refreshError) {
-        store.dispatch(logout());
-        return Promise.reject(refreshError);
+        console.log(newAccessToken, "newAccessToken");
+        if (newAccessToken) {
+          originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return api(originRequest);
+        }
       }
     }
     return Promise.reject(error);

@@ -49,8 +49,6 @@ export const authUser = createAsyncThunk(
         password: "emilyspass",
         expiresInMins: 30,
       });
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -63,6 +61,8 @@ export const refreshToken = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const refreshToken = localStorage.getItem("refreshToken");
+      console.log(refreshToken, "refreshToken");
+
       const response = await refreshTokenAuth(refreshToken);
       localStorage.setItem("accessToken", response.data.accessToken);
       return response.data.accessToken;

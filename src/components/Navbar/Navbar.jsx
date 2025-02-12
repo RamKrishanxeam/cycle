@@ -12,7 +12,6 @@ const Navbar = () => {
   const GoogleName = JSON.parse(useraccessGoogle);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
   useEffect(() => {
     window.addEventListener("scroll", isSticky);
     return () => {
