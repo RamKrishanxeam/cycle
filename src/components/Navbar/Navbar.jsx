@@ -53,9 +53,13 @@ const Navbar = () => {
             >
               <ul className="navbar-nav mx-auto">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/delete-data"
+                  >
                     Bikes
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">
