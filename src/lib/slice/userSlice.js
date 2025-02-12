@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logGoogleUser, loginUser } from "../thunk/userThunk";
+import { authUser, logGoogleUser, loginUser } from "../thunk/userThunk";
 
 const initialState = {
   user: null,
   loading: false,
   errorMessage: null,
   successMessage: null,
+  accessToken: null,
+  refreshToken: null,
 };
 
 const userSlice = createSlice({
@@ -18,26 +20,34 @@ const userSlice = createSlice({
         loading: action.payload,
       };
     },
+    setCredentials: (state, action) => {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.user = action.payload.user;
+    },
     logout: (state) => {
       localStorage.removeItem("user");
       localStorage.removeItem("userGoogle");
       state.user = null;
+      state.accessToken = null;
+      state.refreshToken = null;
+      localStorage.clear();
     },
   },
   extraReducers: (builder) => {
     // login
-    builder.addCase(loginUser.pending, (state, action) => {
+    builder.addCase(authUser.pending, (state, action) => {
       state.loading = true;
       state.errorMessage = null;
       state.successMessage = null;
     });
-    builder.addCase(loginUser.fulfilled, (state, action) => {
+    builder.addCase(authUser.fulfilled, (state, action) => {
       state.loading = false;
       state.user = action.payload;
       state.successMessage =
         "Login successful! Welcome to the Firefox Tribe! 🚀";
     });
-    builder.addCase(loginUser.rejected, (state, action) => {
+    builder.addCase(authUser.rejected, (state, action) => {
       state.loading = false;
       state.errorMessage = "Invalid login. Please try again or register! 🚀";
     });
@@ -62,5 +72,5 @@ const userSlice = createSlice({
   },
 });
 
-// export const userAction = userSlice.actions;
+export const { setCredentials, logout } = userSlice.actions;
 export default userSlice;

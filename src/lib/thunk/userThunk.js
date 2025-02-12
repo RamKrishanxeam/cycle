@@ -44,11 +44,13 @@ export const authUser = createAsyncThunk(
   "auth/authUser",
   async (data, thunkAPI) => {
     try {
-      const response = await login(data);
+      const response = await login({
+        username: "emilys",
+        password: "emilyspass",
+        expiresInMins: 30,
+      });
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
-      console.log(response, "response");
-
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

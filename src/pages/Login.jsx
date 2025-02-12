@@ -13,15 +13,15 @@ const Login = () => {
   // const { errorMessage , } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, successMessage, errorMessage } = useSelector(
+  const { accessToken, successMessage, errorMessage } = useSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    if (user) {
+    if (accessToken) {
       setTimeout(() => navigate("/"), 1000);
     }
-  }, [user, navigate]);
+  }, [accessToken, navigate]);
   return (
     <>
       <Layout>
@@ -37,7 +37,7 @@ const Login = () => {
                 validationSchema={LoginSchema}
                 onSubmit={(values) => {
                   const { email, password } = values;
-                  // dispatch(authUser({ email, password }));
+                  dispatch(authUser({ email, password }));
                 }}
               >
                 {({
@@ -54,7 +54,7 @@ const Login = () => {
                         {errorMessage}
                       </div>
                     )}
-                    {user !== null && successMessage && (
+                    {accessToken !== null && successMessage && (
                       <div className="alert alert-success py-2 d-inline-block">
                         {successMessage}
                       </div>

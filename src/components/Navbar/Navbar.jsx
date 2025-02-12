@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
-import { auth } from "../../config/firebase";
 import { useEffect, useState } from "react";
-import { userAction } from "../../lib/slice/userSlice";
+import { logout } from "../../lib/slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
@@ -115,7 +114,7 @@ const Navbar = () => {
                         />
                       </Link>
                     </div>
-                  ) : user !== null ? (
+                  ) : user?.accessToken && user !== null ? (
                     <>
                       <span
                         onClick={() => setShowMenu(!showMenu)}
@@ -131,13 +130,13 @@ const Navbar = () => {
                       </span>
                     </Link>
                   )}
-                  {user !== null && showMenu && (
+                  {user?.accessToken && user !== null && showMenu && (
                     <div className="logout-menu">
                       <button
                         className="logout-btn"
-                        // onClick={() => {
-                        //   dispatch(userAction.logout());
-                        // }}
+                        onClick={() => {
+                          dispatch(logout());
+                        }}
                       >
                         Logout
                       </button>
