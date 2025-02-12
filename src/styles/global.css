@@ -290,3 +290,34 @@ body {
   margin: 10px;
   display: inline-block;
 }
+
+.split-bar {
+  width: 15px;
+  background-color: #3c3530;
+  cursor: col-resize;
+}
+.split-left {
+  background-image: url("../assets/images/MOF1_Desktop.jpg");
+  background-repeat: no-repeat;
+  height: 100%;
+}
+.split-right {
+  background-image: url("../assets/images/MOF2_Desktop.jpg");
+  background-repeat: no-repeat;
+  height: 100%;
+}
+.custom-sash {
+  width: 6px;
+  background-color: #007bff;
+  cursor: ew-resize;
+  transition: background-color 0.3s;
+}
+
+.custom-sash:hover {
+  background-color: #0056b3;
+}
+.split-sash-content {
+  width: 100%;
+  height: 100%;
+  background: #0056b3;
+}
