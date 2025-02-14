@@ -5,23 +5,22 @@ import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
 import { GoogleLogin } from "../components/GoogleLogin/GoogleLogin";
 import { LoginandSignup } from "../components/Form/Form";
-import { authUser } from "../lib/thunk/userThunk";
-import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../lib/thunk/userThunk";
 import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../config/hooks";
 
 const Login = () => {
-  // const { errorMessage , } = useAuth();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { accessToken, successMessage, errorMessage } = useSelector(
+  const dispatch = useAppDispatch();
+  const { user, errorMessage, successMessage } = useAppSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    if (accessToken) {
+    if (user) {
       setTimeout(() => navigate("/"), 1000);
     }
-  }, [accessToken, navigate]);
+  }, [user, navigate]);
   return (
     <>
       <Layout>
@@ -37,7 +36,7 @@ const Login = () => {
                 validationSchema={LoginSchema}
                 onSubmit={(values) => {
                   const { email, password } = values;
-                  dispatch(authUser({ email, password }));
+                  dispatch(loginUser({ email, password }));
                 }}
               >
                 {({
@@ -54,7 +53,7 @@ const Login = () => {
                         {errorMessage}
                       </div>
                     )}
-                    {accessToken !== null && successMessage && (
+                    {user !== null && successMessage && (
                       <div className="alert alert-success py-2 d-inline-block">
                         {successMessage}
                       </div>
@@ -115,9 +114,12 @@ const Login = () => {
                     </button>
                     <div className="text-center mb-3">
                       <span>New to Firefox?</span>
-                      <a className="text-decoration-none text-reddish-orange fw-bolder">
+                      <Link
+                        to="/sign-up"
+                        className="text-decoration-none text-reddish-orange fw-bolder"
+                      >
                         Create an Account
-                      </a>
+                      </Link>
                     </div>
                     <div className="login-via">
                       <label>

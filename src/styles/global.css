@@ -4,6 +4,9 @@
   --main-blue: #45567d;
   --main-gray: #3f4351;
 }
+.check-orinage {
+  color: var(--main-reddish-orange);
+}
 html,
 body {
   font-family: "Barlow", sans-serif;
