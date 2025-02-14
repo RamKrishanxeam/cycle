@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
 import { useEffect, useState } from "react";
 import { logout } from "../../lib/slice/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../config/hooks";
 
 const Navbar = () => {
   const [sticky, setSticky] = useState("");
@@ -10,8 +11,8 @@ const Navbar = () => {
   const PathLoction = window.location.pathname;
   const useraccessGoogle = localStorage.getItem("userGoogle");
   const GoogleName = JSON.parse(useraccessGoogle);
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   useEffect(() => {
     window.addEventListener("scroll", isSticky);
     return () => {
@@ -117,7 +118,7 @@ const Navbar = () => {
                         />
                       </Link>
                     </div>
-                  ) : user?.accessToken && user !== null ? (
+                  ) : user !== null ? (
                     <>
                       <span
                         onClick={() => setShowMenu(!showMenu)}
@@ -133,7 +134,7 @@ const Navbar = () => {
                       </span>
                     </Link>
                   )}
-                  {user?.accessToken && user !== null && showMenu && (
+                  {user !== null && showMenu && (
                     <div className="logout-menu">
                       <button
                         className="logout-btn"

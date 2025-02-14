@@ -11,17 +11,14 @@ import "slick-carousel/slick/slick-theme.css";
 import "./styles/global.css";
 import { AuthProvider } from "./config/authProvider";
 import { Provider } from "react-redux";
-import { persistor, store } from "./lib/store";
-import { PersistGate } from "redux-persist/integration/react";
+import { store } from "./lib/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
-        <PersistGate persistor={persistor}>
-          <App />
-        </PersistGate>
+        <App />
       </AuthProvider>
     </Provider>
   </React.StrictMode>

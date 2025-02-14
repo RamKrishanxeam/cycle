@@ -2,13 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import google from "../../assets/images/google.svg";
 import { logGoogleUser } from "../../lib/thunk/userThunk";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../config/hooks";
 
 export const GoogleLogin = () => {
-  // const { setSuccessMessage } = useAuth();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (user) {
