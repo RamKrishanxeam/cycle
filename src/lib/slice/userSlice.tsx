@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logGoogleUser, loginUser, SignUpUser } from "../thunk/userThunk";
+import {
+  FacebookLoginAuth,
+  logGoogleUser,
+  loginUser,
+  SignUpUser,
+} from "../thunk/userThunk";
 
 interface AuthStateType {
   user: { email: string | null } | null;
@@ -89,6 +94,24 @@ export const userSlice = createSlice({
       state.loading = false;
       state.errorMessage =
         "Invalid login. Please try again or Google Login! 🚀";
+    });
+
+    // Facebook login
+    builder.addCase(FacebookLoginAuth.pending, (state, action) => {
+      state.loading = true;
+      state.errorMessage = null;
+      state.successMessage = null;
+    });
+    builder.addCase(FacebookLoginAuth.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload ?? null;
+      state.successMessage =
+        "Facebook Login successful! Welcome to the Firefox Tribe! 🚀";
+    });
+    builder.addCase(FacebookLoginAuth.rejected, (state, action) => {
+      state.loading = false;
+      state.errorMessage =
+        "Invalid login. Please try again or Facebook Login! 🚀";
     });
   },
 });
