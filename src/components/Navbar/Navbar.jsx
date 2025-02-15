@@ -9,8 +9,8 @@ const Navbar = () => {
   const [sticky, setSticky] = useState("");
   const [showMenu, setShowMenu] = useState(false);
   const PathLoction = window.location.pathname;
-  const useraccessGoogle = localStorage.getItem("userGoogle");
-  const GoogleName = JSON.parse(useraccessGoogle);
+  const userGoogeleAndFacebook = localStorage.getItem("userGoogle");
+  const GoogleAndfacebook = JSON.parse(userGoogeleAndFacebook);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   useEffect(() => {
@@ -23,6 +23,7 @@ const Navbar = () => {
     const stickyClass = window.scrollY >= 250 ? "is-sticky" : "";
     setSticky(stickyClass);
   };
+
   return (
     <>
       <div
@@ -100,7 +101,7 @@ const Navbar = () => {
                   </span>
                 </div>
                 <div className="person position-relative">
-                  {GoogleName?.displayName ? (
+                  {GoogleAndfacebook?.displayName ? (
                     <div className="logout-menu-container">
                       <Link
                         to="#"
@@ -109,10 +110,10 @@ const Navbar = () => {
                       >
                         <img
                           src={
-                            GoogleName.photoURL ||
+                            GoogleAndfacebook.photoURL ||
                             "https://via.placeholder.com/96"
                           }
-                          alt="GoogleName"
+                          alt="GoogleAndfacebook"
                           className="img-fluid rounded-pill"
                           style={{ width: "30px" }}
                         />

@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../layout/Layout";
-import facebook from "../assets/images/facebook.svg";
 import { Formik } from "formik";
 import { LoginSchema } from "../config/validation";
 import { GoogleLogin } from "../components/GoogleLogin/GoogleLogin";
@@ -8,6 +7,9 @@ import { LoginandSignup } from "../components/Form/Form";
 import { loginUser } from "../lib/thunk/userThunk";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../config/hooks";
+import { auth, facebookAuth } from "../config/firebase";
+import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+import FacebookLogin from "../components/FacebookLogin/FacebookLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const Login = () => {
       setTimeout(() => navigate("/"), 1000);
     }
   }, [user, navigate]);
+
   return (
     <>
       <Layout>
@@ -127,13 +130,7 @@ const Login = () => {
                       </label>
                       <ul className="social-list">
                         <li className="social-item">
-                          <Link to="">
-                            <img
-                              src={facebook}
-                              alt="facebook"
-                              className="img-fluid"
-                            />
-                          </Link>
+                          <FacebookLogin />
                         </li>
                         <li className="social-item">
                           <GoogleLogin />

@@ -1,7 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db, signInWithGooglePopup } from "../../config/firebase";
-// import { login, refreshTokenAuth } from "../../config/userAPi";
+import {
+  FacebookAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import {
+  auth,
+  db,
+  signInWithGooglePopup,
+  facebookAuth,
+} from "../../config/firebase";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -96,7 +104,24 @@ export const logGoogleUser = createAsyncThunk(
     }
   }
 );
-
+export const FacebookLoginAuth = createAsyncThunk(
+  "FacebookLoginAuth",
+  async (data, thunkAPI) => {
+    try {
+      const result = await signInWithPopup(auth, facebookAuth);
+      const user = result.user;
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      const accessToken = credential?.accessToken;
+      if (user.uid) {
+        localStorage.setItem("userGoogle", JSON.stringify(user));
+        return user;
+      }
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 // export const authUser = createAsyncThunk(
 //   "auth/authUser",
 //   async (data, thunkAPI) => {
