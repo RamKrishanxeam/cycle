@@ -9,7 +9,7 @@ const Navbar = () => {
   const [sticky, setSticky] = useState("");
   const [showMenu, setShowMenu] = useState(false);
   const PathLoction = window.location.pathname;
-  const userGoogeleAndFacebook = localStorage.getItem("userGoogle");
+  const userGoogeleAndFacebook = localStorage.getItem("userGoogleAndFacebook");
   const GoogleAndfacebook = JSON.parse(userGoogeleAndFacebook);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);

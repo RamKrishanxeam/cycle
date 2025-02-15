@@ -95,7 +95,7 @@ export const logGoogleUser = createAsyncThunk(
       const response = await signInWithGooglePopup();
       const user = response.user;
       if (user.emailVerified) {
-        localStorage.setItem("userGoogle", JSON.stringify(user));
+        localStorage.setItem("userGoogleAndFacebook", JSON.stringify(user));
         return user;
       }
     } catch (error) {
@@ -113,7 +113,7 @@ export const FacebookLoginAuth = createAsyncThunk(
       const credential = FacebookAuthProvider.credentialFromResult(result);
       const accessToken = credential?.accessToken;
       if (user.uid) {
-        localStorage.setItem("userGoogle", JSON.stringify(user));
+        localStorage.setItem("userGoogleAndFacebook", JSON.stringify(user));
         return user;
       }
     } catch (error) {

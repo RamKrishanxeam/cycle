@@ -32,7 +32,7 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       localStorage.removeItem("user");
-      localStorage.removeItem("userGoogle");
+      localStorage.removeItem("userGoogleAndFacebook");
       state.user = null;
       state.successMessage = null;
       state.errorMessage = null;
