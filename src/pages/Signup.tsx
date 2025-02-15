@@ -3,7 +3,7 @@ import Layout from "../layout/Layout";
 import { Formik } from "formik";
 import { SignUpSchema } from "../config/validation";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignUpUser } from "../lib/thunk/userThunk";
 import { useAppDispatch, useAppSelector } from "../config/hooks";
 
@@ -35,7 +35,6 @@ const Signup: React.FC = () => {
                 }}
                 validationSchema={SignUpSchema}
                 onSubmit={async (values) => {
-                  console.log(values);
                   dispatch(SignUpUser(values));
                 }}
               >

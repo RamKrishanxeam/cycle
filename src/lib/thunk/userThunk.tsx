@@ -49,8 +49,6 @@ export const loginUser = createAsyncThunk(
 export const SignUpUser = createAsyncThunk(
   "SignUpUser",
   async (values: ValuesType, thunkAPI) => {
-    console.log(values, "values");
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -59,18 +57,21 @@ export const SignUpUser = createAsyncThunk(
       );
       const user = userCredential.user;
       if (user) {
-        await setDoc(
-          doc(db, "users", user.uid),
-          {
-            FName: values.FName,
-            LName: values.LName,
-            PNumber: values.PNumber,
-            email: values.email,
-            password: values.password,
-            CPassword: values.CPassword,
-          },
-          { merge: true }
-        );
+        const userData = {
+          uid: user.uid,
+          FName: values.FName,
+          LName: values.LName,
+          PNumber: values.PNumber,
+          email: values.email,
+          password: values.password,
+          CPassword: values.CPassword,
+        };
+        await setDoc(doc(db, "users", user.uid), userData, { merge: true });
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1000);
+
+        return userData;
       }
     } catch (error) {
       console.log(error);

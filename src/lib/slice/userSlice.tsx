@@ -63,7 +63,6 @@ export const userSlice = createSlice({
     builder.addCase(SignUpUser.fulfilled, (state, action) => {
       state.loading = false;
       state.user = action.payload ?? null;
-      console.log(action, "action.payload");
 
       state.successMessage =
         "Sign up successful! Welcome to the Firefox Tribe! 🚀";
@@ -71,9 +70,7 @@ export const userSlice = createSlice({
     builder.addCase(SignUpUser.rejected, (state, action) => {
       state.user = null;
       state.loading = false;
-      console.log(action, "action");
-
-      state.errorMessage = "Invalid login. Please try again or register! 🚀";
+      state.errorMessage = "Email already exists! Please use a different email";
     });
 
     // google login
