@@ -92,8 +92,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(logGoogleUser.rejected, (state, action) => {
       state.loading = false;
-      state.errorMessage =
-        "Invalid login. Please try again or Google Login! 🚀";
+      state.errorMessage = "You have already signed up";
     });
 
     // Facebook login
