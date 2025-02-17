@@ -23,7 +23,7 @@ export const LoginandSignup = ({
               </div>
             </div>
             <div className="col-sm-6 col-md-6">
-              <div className="bs-box">{formSection}</div>
+              <div className="bs-box sign-up-box">{formSection}</div>
             </div>
           </div>
         </div>

@@ -168,7 +168,6 @@ body {
   margin-bottom: 0;
 }
 .bs-box input {
-  color: #fff !important;
   padding: 4px 0px;
   font-size: 16px;
 }
@@ -177,6 +176,7 @@ body {
   margin-right: 5px;
   font-size: 14px;
 }
+
 .social-list {
   list-style: none;
   display: flex;
