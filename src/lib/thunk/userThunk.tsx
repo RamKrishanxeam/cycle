@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   FacebookAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPhoneNumber,
   signInWithPopup,
 } from "firebase/auth";
 import {
@@ -29,6 +30,11 @@ interface loginType {
   password: string;
 }
 
+interface PhoneNumberUserData {
+  auth: any;
+  appVerifier: any;
+  phoneNumber: string;
+}
 export const loginUser = createAsyncThunk(
   "loginUser",
   async ({ email, password }: loginType, thunkAPI) => {
@@ -122,6 +128,32 @@ export const FacebookLoginAuth = createAsyncThunk(
     }
   }
 );
+
+export const phoneNumberUser = createAsyncThunk(
+  "phoneNumberUser",
+  async ({ auth, appVerifier, phoneNumber }: PhoneNumberUserData, thunkAPI) => {
+    try {
+      console.log("OTP function!");
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        phoneNumber,
+        appVerifier
+      );
+      console.log("OTP sent!");
+      window.confirmationResult = confirmationResult;
+      const userData = {
+        confirmationResult,
+        phoneNumber: phoneNumber || null,
+      };
+      console.log("OTP sent and user data:", userData);
+      return userData;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 // export const authUser = createAsyncThunk(
 //   "auth/authUser",
 //   async (data, thunkAPI) => {

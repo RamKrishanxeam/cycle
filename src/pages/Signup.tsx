@@ -6,85 +6,18 @@ import { SignUpSchema } from "../config/validation";
 import { Link } from "react-router-dom";
 import { SignUpUser } from "../lib/thunk/userThunk";
 import { useAppDispatch, useAppSelector } from "../config/hooks";
-import { useEffect, useRef, useState } from "react";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { auth } from "../config/firebase";
 
-declare global {
-  interface Window {
-    recaptchaVerifier: any;
-    confirmationResult: any;
-  }
-}
+
 
 const Signup: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [otp, setOtp] = useState(Array(6).fill(""));
-  const [showOtpInput, setShowOtpInput] = useState(false);
-  const inputs = useRef<Array<HTMLInputElement | null>>([]);
+
 
   const { user, errorMessage, successMessage } = useAppSelector(
     (state) => state.auth
   );
 
-  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
-  useEffect(() => {
-    const recaptchaElement = document.getElementById("recaptcha");
-
-    if (recaptchaElement && !recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "recaptcha", {
-        size: "normal",
-        callback: () => console.log("ReCAPTCHA Verified"),
-      });
-
-      recaptchaVerifierRef.current.render().catch((error) => {
-        console.error("Error rendering reCAPTCHA:", error);
-      });
-    }
-  }, []);
-
-  const handleFormSubmit = async (
-    values: { PNumber: string },
-    actionType: string
-  ) => {
-    const phoneNumber = `+919999999999`;
-    console.log("Sending OTP to:", phoneNumber);
-    if (actionType === "sendOTP") {
-      if (values.PNumber !== "") {
-        setShowOtpInput(true);
-        try {
-          const appVerifier = recaptchaVerifierRef.current;
-          if (!appVerifier) {
-            console.error("reCAPTCHA not initialized");
-            return;
-          }
-          const confirmationResult = await signInWithPhoneNumber(
-            auth,
-            phoneNumber,
-            appVerifier
-          );
-          window.confirmationResult = confirmationResult;
-          setShowOtpInput(true);
-          console.log("OTP sent!");
-        } catch (error) {
-          console.error("Error sending OTP:", error);
-        }
-      }
-    } else if (actionType === "verifyOTP") {
-      console.log("Verifying OTP:", otp.join(""));
-    }
-  };
-  const handleOtpChange = (index: number, value: string) => {
-    if (/^\d?$/.test(value)) {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-
-      if (value && index < otp.length - 1) {
-        inputs.current[index + 1]?.focus();
-      }
-    }
-  };
+ 
   return (
     <>
       <Layout>
@@ -107,7 +40,7 @@ const Signup: React.FC = () => {
                 }}
                 validationSchema={SignUpSchema}
                 onSubmit={async (values) => {
-                  // dispatch(SignUpUser(values));
+                  dispatch(SignUpUser(values));
                 }}
               >
                 {({
@@ -171,91 +104,16 @@ const Signup: React.FC = () => {
                     </div>
                     <div className="mb-4 position-relative">
                       <label className="form-label">Mobile*</label>
-                      {!showOtpInput ? (
-                        <>
-                          <input
-                            type="text"
-                            className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
-                            placeholder="Enter Phone Number"
-                            name="PNumber"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.PNumber}
-                            maxLength={10}
-                          />
-                          <button
-                            type="submit"
-                            style={{
-                              border: "none",
-                              borderRadius: "4px",
-                              backgroundColor: "#007bff",
-                              color: "#fff",
-                              cursor: "pointer",
-                              top: "20px",
-                            }}
-                            onClick={() => {
-                              handleFormSubmit(
-                                { PNumber: values.PNumber },
-                                "sendOTP"
-                              );
-                            }}
-                            className="my-2 mx-1 position-absolute end-0"
-                          >
-                            Send OTP
-                          </button>
-                        </>
-                      ) : (
-                        <div className="d-flex gap-2 mt-2">
-                          {otp.map((_, index) => (
-                            <input
-                              key={index}
-                              ref={(el) => {
-                                inputs.current[index] = el;
-                              }}
-                              type="text"
-                              className="form-control shadow-none text-dark bg-transparent border-0 border-bottom rounded-0 text-white"
-                              maxLength={1}
-                              name="PNumber"
-                              value={otp[index]}
-                              onChange={(e) =>
-                                handleOtpChange(index, e.target.value)
-                              }
-                              onKeyDown={(e) => {
-                                if (
-                                  e.key === "Backspace" &&
-                                  !otp[index] &&
-                                  index > 0
-                                ) {
-                                  inputs.current[index - 1]?.focus();
-                                }
-                              }}
-                              style={{
-                                width: "40px",
-                                height: "40px",
-                                textAlign: "center",
-                                fontSize: "18px",
-                                border: "1px solid #ccc",
-                                borderRadius: "4px",
-                              }}
-                            />
-                          ))}
-                          <button
-                            type="submit"
-                            style={{
-                              border: "none",
-                              borderRadius: "4px",
-                              backgroundColor: "#007bff",
-                              color: "#fff",
-                              cursor: "pointer",
-                              top: "30px",
-                            }}
-                            className="my-2 mx-1 position-absolute end-0"
-                          >
-                            Verify OTP
-                          </button>
-                        </div>
-                      )}
-
+                      <input
+                        type="text"
+                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
+                        placeholder="Enter Phone Number"
+                        name="PNumber"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.PNumber}
+                        maxLength={10}
+                      />
                       {errors.PNumber && touched.PNumber && (
                         <div className="error-message">
                           <span className="material-symbols-outlined">
@@ -372,11 +230,6 @@ const Signup: React.FC = () => {
                   </form>
                 )}
               </Formik>
-              <div
-                id="recaptcha"
-                className="position-relative"
-                style={{ zIndex: "111" }}
-              ></div>
             </>
           }
         />

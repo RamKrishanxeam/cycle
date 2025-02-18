@@ -137,6 +137,11 @@ const Navbar = () => {
                   )}
                   {user !== null && showMenu && (
                     <div className="logout-menu">
+                      <Link to="account-show">
+                        <span className="text-white text-decoration-none">
+                          My Profile
+                        </span>
+                      </Link>
                       <button
                         className="logout-btn"
                         onClick={() => {

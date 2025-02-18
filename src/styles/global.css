@@ -324,3 +324,75 @@ body {
   height: 100%;
   background: #0056b3;
 }
+
+.sec-title {
+  font-size: 30px;
+  color: #3f4351;
+  font-weight: 700;
+  border-bottom: 3px solid rgba(151, 151, 151, 0.4);
+  padding-bottom: 1rem;
+}
+.cp-dotted-box {
+  padding: 2rem 4rem;
+  border-radius: 6.4px;
+  border: dashed 1px #5f5f5f;
+  margin-bottom: 2rem;
+}
+.cp-profile .info-list {
+  display: flex;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.cp-profile .info-list .info-item {
+  width: 40%;
+}
+.cp-profile .info-list .info-item .info-label {
+  margin-bottom: 0px;
+  font-size: 14px;
+  color: #3f4351;
+}
+.cp-profile .info-list .info-item .info-value {
+  font-size: 18px;
+  color: #000000;
+}
+.dashboardCards .title-wrap {
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.dashboardCards .prodcut-list .item {
+  padding: 1rem 0rem 2rem;
+  border-bottom: 3px solid rgba(151, 151, 151, 0.3);
+  display: flex;
+  margin-bottom: 3rem;
+  position: relative;
+}
+.dashboardCards .prodcut-list .item .img-wrap {
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #c9c9c9;
+  padding: 0.8rem;
+  margin-right: 3rem;
+}
+.item.typ-order .purches-detail .p-list {
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+.cp-cart .prodcut-list .purches-detail .p-item .label {
+  font-size: 14px;
+  color: #3f4351;
+  text-transform: capitalize;
+  display: block;
+}

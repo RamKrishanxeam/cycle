@@ -3,11 +3,13 @@ import {
   FacebookLoginAuth,
   logGoogleUser,
   loginUser,
+  phoneNumberUser,
   SignUpUser,
 } from "../thunk/userThunk";
 
 interface AuthStateType {
   user: { email: string | null } | null;
+  phoneNumber: string | null;
   loading: boolean;
   errorMessage: string | null;
   successMessage: string | null;
@@ -15,6 +17,7 @@ interface AuthStateType {
 
 const initialState: AuthStateType = {
   user: null,
+  phoneNumber: null,
   loading: false,
   errorMessage: null,
   successMessage: null,
@@ -111,6 +114,23 @@ export const userSlice = createSlice({
       state.loading = false;
       state.errorMessage =
         "Invalid login. Please try again or Facebook Login! 🚀";
+    });
+
+    // send OTP
+    builder.addCase(phoneNumberUser.pending, (state, action) => {
+      state.loading = true;
+      state.errorMessage = null;
+      state.successMessage = null;
+    });
+    builder.addCase(phoneNumberUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.successMessage =
+        "send OTP successful! Welcome to the Firefox Tribe! 🚀";
+    });
+    builder.addCase(phoneNumberUser.rejected, (state, action) => {
+      state.loading = false;
+      state.errorMessage = "Please try again or send OTP! 🚀";
     });
   },
 });
