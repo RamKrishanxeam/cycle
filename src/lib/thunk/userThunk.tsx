@@ -77,8 +77,6 @@ export const SignUpUser = createAsyncThunk(
           LName: values.LName,
           PNumber: values.PNumber,
           email: values.email,
-          password: values.password,
-          CPassword: values.CPassword,
         };
         await setDoc(doc(db, "users", user.uid), userData, { merge: true });
         setTimeout(() => {

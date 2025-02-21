@@ -1,6 +1,34 @@
+import { useEffect, useState } from "react";
 import Layout from "../layout/Layout";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../config/firebase";
 
+interface DocumentData {
+  mobile: number;
+  fName: string;
+  lName: string;
+  address_1: string;
+  address_2: string;
+  pincode: string;
+  country: string;
+  status: boolean;
+  address_type: string;
+}
 const MyAccount = () => {
+  const [addressData, setAddressData] = useState<DocumentData[]>([]);
+
+  useEffect(() => {
+    const getPost = async () => {
+      const usersData = collection(db, "Address");
+      const usersshot = await getDocs(usersData);
+      const newdata: DocumentData[] = usersshot.docs.map(
+        (doc) => doc.data() as DocumentData
+      );
+      setAddressData(newdata);
+    };
+    getPost();
+  }, []);
+
   return (
     <>
       <Layout>
@@ -71,6 +99,76 @@ const MyAccount = () => {
                     </div>
                   </li>
                 </ul>
+              </div>
+            </div>
+            <div className="dashboardCards col-md-9">
+              <div className="title-wrap mb-3">
+                <h5 className="fw-semibold">Address Book</h5>
+                <a
+                  className="check-orinage text-decoration-none  fw-semibold"
+                  href=""
+                >
+                  View All
+                </a>
+              </div>
+              <div className="cp-profile">
+                <div className="cp-dotted-box">
+                  <ul className="info-list typ-address">
+                    <li className="no-margin">
+                      <div className="bs-radio">
+                        <div className="cp-radio-box typ-address">
+                          <div className="radio-wrap">
+                            {addressData.length > 0 ? (
+                              addressData.map((item, index) => {
+                                return (
+                                  <>
+                                    <input
+                                      type="radio"
+                                      name="address"
+                                      checked={item.status}
+                                    />
+                                    <label key={index}>
+                                      <p className="name fw-bolder mb-0">
+                                        {`${item.fName + " " + item.lName}`}
+                                        <small className="tag bg-body-secondary px-2 rounded-pill">
+                                          Work
+                                        </small>
+                                      </p>
+
+                                      <p className="address d-grid gap-1 mb-0">
+                                        {item.address_1},
+                                        <span className="cm-line-break">
+                                          {item.address_2},
+                                        </span>
+                                        <span className="cm-line-break">
+                                          {item.pincode}
+                                        </span>
+                                      </p>
+                                      <p className="phone-no">
+                                        Mobile:
+                                        <span className="fw-bolder">
+                                          {item.mobile}
+                                        </span>
+                                      </p>
+                                    </label>
+                                  </>
+                                );
+                              })
+                            ) : (
+                              <div className="loader"></div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li>
+                      <a href="" className="btn bg-reddish-orange">
+                        Add New Address
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
