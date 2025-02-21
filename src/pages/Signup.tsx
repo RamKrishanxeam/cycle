@@ -3,16 +3,21 @@ import Layout from "../layout/Layout";
 import { Formik } from "formik";
 import { SignUpSchema } from "../config/validation";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SignUpUser } from "../lib/thunk/userThunk";
 import { useAppDispatch, useAppSelector } from "../config/hooks";
 
+
+
 const Signup: React.FC = () => {
   const dispatch = useAppDispatch();
+
+
   const { user, errorMessage, successMessage } = useAppSelector(
     (state) => state.auth
   );
 
+ 
   return (
     <>
       <Layout>
@@ -61,7 +66,7 @@ const Signup: React.FC = () => {
                       <label className="form-label">First Name*</label>
                       <input
                         type="text"
-                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0"
+                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter First Name"
                         name="FName"
                         onChange={handleChange}
@@ -81,7 +86,7 @@ const Signup: React.FC = () => {
                       <label className="form-label">Last Name*</label>
                       <input
                         type="text"
-                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0"
+                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Last Name"
                         name="LName"
                         onChange={handleChange}
@@ -97,11 +102,11 @@ const Signup: React.FC = () => {
                         </div>
                       )}
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 position-relative">
                       <label className="form-label">Mobile*</label>
                       <input
                         type="text"
-                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0"
+                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Phone Number"
                         name="PNumber"
                         onChange={handleChange}
@@ -122,7 +127,7 @@ const Signup: React.FC = () => {
                       <label className="form-label">Email*</label>
                       <input
                         type="text"
-                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0"
+                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Email Address"
                         name="email"
                         onChange={handleChange}
@@ -142,7 +147,7 @@ const Signup: React.FC = () => {
                       <label className="form-label">Password*</label>
                       <input
                         type="password"
-                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0"
+                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Password"
                         name="password"
                         onChange={handleChange}
@@ -162,7 +167,7 @@ const Signup: React.FC = () => {
                       <label className="form-label">Confirm Password*</label>
                       <input
                         type="password"
-                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0"
+                        className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Confirm Password"
                         name="CPassword"
                         onChange={handleChange}
