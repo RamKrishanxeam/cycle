@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "../layout/Layout";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
+import { Link } from "react-router-dom";
 
 interface DocumentData {
   mobile: number;
@@ -163,9 +164,9 @@ const MyAccount = () => {
                     </li>
 
                     <li>
-                      <a href="" className="btn bg-reddish-orange">
+                      <Link to="/add-address" className="btn bg-reddish-orange">
                         Add New Address
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
