@@ -446,3 +446,7 @@ body {
     transform: rotate(1turn);
   }
 }
+.lyt-profile-sec label {
+  font-size: 13px;
+  color: #3f4351;
+}
