@@ -137,7 +137,7 @@ const Navbar = () => {
                   )}
                   {user !== null && showMenu && (
                     <div className="logout-menu">
-                      <Link to="account-show">
+                      <Link to="/account-show" className="text-decoration-none">
                         <span className="text-white text-decoration-none">
                           My Profile
                         </span>
