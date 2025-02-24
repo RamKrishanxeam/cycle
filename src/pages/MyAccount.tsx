@@ -112,12 +112,12 @@ const MyAccount = () => {
             <div className="dashboardCards col-md-9">
               <div className="title-wrap mb-3">
                 <h5 className="fw-semibold">Address Book</h5>
-                <a
+                <Link
                   className="check-orinage text-decoration-none  fw-semibold"
-                  href=""
+                  to="/address-list"
                 >
                   View All
-                </a>
+                </Link>
               </div>
               <div className="cp-profile">
                 <div className="cp-dotted-box">
