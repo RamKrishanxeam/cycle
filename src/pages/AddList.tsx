@@ -136,46 +136,43 @@ const AddList = () => {
                       </li>
                     </ul>
                   </div>
-                  <div className="cp-dotted-box p-3" key={index}>
-                    <ul className="info-list typ-address ">
-                      <li className="no-margin">
-                        <div
-                          className="radio-wrap"
-                          style={{ cursor: "pointer" }}
-                        >
-                          <Link
-                            to="/add-address"
-                            className="d-flex align-items-center text-dark text-decoration-none"
-                          >
-                            <svg
-                              className="fw-bold"
-                              width="20px"
-                              height="20px"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"
-                                fill="#f8673b"
-                              />
-                            </svg>
-                            <span
-                              className="fw-semibold"
-                              style={{ fontSize: "14px" }}
-                            >
-                              Add NewAddress
-                            </span>
-                          </Link>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
                 </>
               ))
             ) : (
               <div className="no-data-found">No Data Found</div>
             )}
+            <div className="cp-dotted-box p-3">
+              <ul className="info-list typ-address ">
+                <li className="no-margin">
+                  <div className="radio-wrap" style={{ cursor: "pointer" }}>
+                    <Link
+                      to="/add-address"
+                      className="d-flex align-items-center text-dark text-decoration-none"
+                    >
+                      <svg
+                        className="fw-bold"
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"
+                          fill="#f8673b"
+                        />
+                      </svg>
+                      <span
+                        className="fw-semibold"
+                        style={{ fontSize: "14px" }}
+                      >
+                        Add NewAddress
+                      </span>
+                    </Link>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </Layout>
