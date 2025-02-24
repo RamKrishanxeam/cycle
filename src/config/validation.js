@@ -32,3 +32,16 @@ export const SignUpSchema = Yup.object().shape({
     .required("This field is required."),
   CheckBox: Yup.boolean().oneOf([true], "This field is required."),
 });
+export const addressSchema = Yup.object({
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  address1: Yup.string().required("Address is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+  zipCode: Yup.string()
+    .matches(/^[0-9]{6}$/, "Zip Code must be 6 digits")
+    .required("Zip Code is required"),
+  phone: Yup.string()
+    .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
+    .required("Phone number is required"),
+});

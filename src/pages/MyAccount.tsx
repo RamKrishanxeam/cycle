@@ -5,30 +5,37 @@ import { db } from "../config/firebase";
 import { Link } from "react-router-dom";
 
 interface DocumentData {
-  mobile: number;
-  fName: string;
-  lName: string;
-  address_1: string;
-  address_2: string;
-  pincode: string;
+  addressType: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  address2: string;
   country: string;
+  state: string;
+  city: string;
+  zipCode: string;
+  phone: string;
   status: boolean;
-  address_type: string;
 }
 const MyAccount = () => {
   const [addressData, setAddressData] = useState<DocumentData[]>([]);
 
   useEffect(() => {
     const getPost = async () => {
-      const usersData = collection(db, "Address");
-      const usersshot = await getDocs(usersData);
-      const newdata: DocumentData[] = usersshot.docs.map(
-        (doc) => doc.data() as DocumentData
-      );
+      const usersData = collection(db, "add_addresses");
+      const usersnapshot = await getDocs(usersData);
+      const newdata: DocumentData[] = usersnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...(doc.data() as DocumentData),
+        };
+      });
       setAddressData(newdata);
     };
     getPost();
   }, []);
+
+  const addressList = addressData[0];
 
   return (
     <>
@@ -120,41 +127,41 @@ const MyAccount = () => {
                         <div className="cp-radio-box typ-address">
                           <div className="radio-wrap">
                             {addressData.length > 0 ? (
-                              addressData.map((item, index) => {
-                                return (
-                                  <>
-                                    <input
-                                      type="radio"
-                                      name="address"
-                                      checked={item.status}
-                                    />
-                                    <label key={index}>
-                                      <p className="name fw-bolder mb-0">
-                                        {`${item.fName + " " + item.lName}`}
-                                        <small className="tag bg-body-secondary px-2 rounded-pill">
-                                          Work
-                                        </small>
-                                      </p>
+                              <>
+                                <input
+                                  type="radio"
+                                  name="address"
+                                  defaultChecked={addressList.status}
+                                />
+                                <label>
+                                  <p className="name fw-bolder mb-0">
+                                    {`${
+                                      addressList.firstName +
+                                      " " +
+                                      addressList.lastName
+                                    }`}
+                                    <small className="tag bg-body-secondary px-2 rounded-pill">
+                                      Work
+                                    </small>
+                                  </p>
 
-                                      <p className="address d-grid gap-1 mb-0">
-                                        {item.address_1},
-                                        <span className="cm-line-break">
-                                          {item.address_2},
-                                        </span>
-                                        <span className="cm-line-break">
-                                          {item.pincode}
-                                        </span>
-                                      </p>
-                                      <p className="phone-no">
-                                        Mobile:
-                                        <span className="fw-bolder">
-                                          {item.mobile}
-                                        </span>
-                                      </p>
-                                    </label>
-                                  </>
-                                );
-                              })
+                                  <p className="address d-grid gap-1 mb-0">
+                                    {addressList.address1},
+                                    <span className="cm-line-break">
+                                      {addressList.address2},
+                                    </span>
+                                    <span className="cm-line-break">
+                                      {addressList.zipCode}
+                                    </span>
+                                  </p>
+                                  <p className="phone-no">
+                                    Mobile:
+                                    <span className="fw-bolder">
+                                      {addressList.phone}
+                                    </span>
+                                  </p>
+                                </label>
+                              </>
                             ) : (
                               <div className="loader"></div>
                             )}
