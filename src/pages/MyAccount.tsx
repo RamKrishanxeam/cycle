@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Layout from "../layout/Layout";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../config/hooks";
 
 interface DocumentData {
   addressType: string;
@@ -36,6 +37,15 @@ const MyAccount = () => {
   }, []);
 
   const addressList = addressData[0];
+
+  const { user } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      setTimeout(() => navigate("/login"), 1000);
+    }
+  }, [user, navigate]);
 
   return (
     <>
