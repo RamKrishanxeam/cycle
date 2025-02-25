@@ -33,6 +33,7 @@ const PhoneVerify: React.FC = () => {
     if (recaptchaElement && !recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "recaptcha", {
         size: "normal",
+        siteKey: "6LdfuOEqAAAAAFUOtk8xiXmfFvh_6QMqPMdAzSKG",
         callback: () => {
           console.log("ReCAPTCHA Verified");
           setReCAPTCHAVerified(true);
