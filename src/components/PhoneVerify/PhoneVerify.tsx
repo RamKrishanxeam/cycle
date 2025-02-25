@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { RecaptchaVerifier } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
@@ -29,31 +29,41 @@ const PhoneVerify: React.FC = () => {
   const appVerifier = recaptchaVerifierRef.current;
 
   useEffect(() => {
-    auth.settings.appVerificationDisabledForTesting = false;
     const recaptchaElement = document.getElementById("recaptcha");
     if (recaptchaElement && !recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "recaptcha", {
         size: "normal",
-        siteKey: "6LdfuOEqAAAAAFUOtk8xiXmfFvh_6QMqPMdAzSKG",
+        siteKey: "6Lcx5eEqAAAAAKCNerFhawMecTFrc20ecGy7AOUt",
         callback: () => {
           console.log("ReCAPTCHA Verified");
           setReCAPTCHAVerified(true);
         },
+        "expired-callback": () => {
+          console.log("ReCAPTCHA expired, please try again");
+          setReCAPTCHAVerified(false);
+        },
       });
+
       recaptchaVerifierRef.current.render().catch((error) => {
         console.error("Error rendering reCAPTCHA:", error);
       });
     }
-  }, [showOtpInput, auth]);
+  }, [auth]);
 
   useEffect(() => {
     if (reCAPTCHAVerified) {
       const phoneNumber = `+91${values.PNumber}`;
       if (phoneNumber) {
-        dispatch(phoneNumberUser({ auth, appVerifier, phoneNumber }));
+        dispatch(
+          phoneNumberUser({
+            auth,
+            appVerifier: recaptchaVerifierRef.current,
+            phoneNumber,
+          })
+        );
       }
     }
-  }, [reCAPTCHAVerified, values.PNumber, dispatch, auth, appVerifier]);
+  }, [reCAPTCHAVerified, values.PNumber, dispatch, auth]);
 
   const handleChangePhone = (e: { target: { name: any; value: any } }) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -181,11 +191,7 @@ const PhoneVerify: React.FC = () => {
                   <label className="form-label">Verify OTP</label>
                   <div className="d-flex gap-2 mb-3">
                     {!reCAPTCHAVerified ? (
-                      <div
-                        id="recaptcha"
-                        className="position-relative"
-                        style={{ zIndex: "111" }}
-                      ></div>
+                      <></>
                     ) : (
                       otp.map((_, index) => (
                         <input
@@ -251,6 +257,11 @@ const PhoneVerify: React.FC = () => {
           </>
         )}
       </Formik>
+      <div
+        id="recaptcha"
+        className="position-relative"
+        style={{ zIndex: "111" }}
+      ></div>
     </>
   );
 };
