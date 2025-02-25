@@ -29,6 +29,7 @@ const PhoneVerify: React.FC = () => {
   const appVerifier = recaptchaVerifierRef.current;
 
   useEffect(() => {
+    auth.settings.appVerificationDisabledForTesting = false;
     const recaptchaElement = document.getElementById("recaptcha");
     if (recaptchaElement && !recaptchaVerifierRef.current) {
       recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "recaptcha", {
