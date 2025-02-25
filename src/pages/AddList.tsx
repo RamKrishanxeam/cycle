@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
 import Layout from "../layout/Layout";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+  writeBatch,
+} from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Link } from "react-router-dom";
 
 interface DocumentData {
+  isDefault: boolean;
   id: string;
   addressType: string;
   firstName: string;
@@ -21,33 +30,67 @@ interface DocumentData {
 const AddList = () => {
   const [addressData, setAddressData] = useState<DocumentData[]>([]);
   const [isLoading, setIsLoader] = useState(true);
-  const getPost = async () => {
-    try {
-      const usersData = collection(db, "add_addresses");
-      const usersnapshot = await getDocs(usersData);
-      const newdata: DocumentData[] = usersnapshot.docs.map((doc) => {
+  // const getPost = async () => {
+  //   try {
+  //     const usersData = collection(db, "add_addresses");
+  //     const usersnapshot = await getDocs(usersData);
+  //     const newdata: DocumentData[] = usersnapshot.docs.map((doc) => {
+  //       const data = doc.data() as Omit<DocumentData, "id">;
+  //       return { id: doc.id, ...data };
+  //     });
+  //     setIsLoader(false);
+  //     setAddressData(newdata);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setIsLoader(true);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getPost();
+  // }, []);
+  useEffect(() => {
+    const usersData = collection(db, "add_addresses");
+
+    const unsubscribe = onSnapshot(usersData, (snapshot) => {
+      const newData: DocumentData[] = snapshot.docs.map((doc) => {
         const data = doc.data() as Omit<DocumentData, "id">;
         return { id: doc.id, ...data };
       });
+      console.log("@@@ UPDATE: ", newData);
+      setAddressData(newData);
       setIsLoader(false);
-      setAddressData(newdata);
-    } catch (error) {
-      console.log(error);
-      setIsLoader(true);
-    }
-  };
-
-  useEffect(() => {
-    getPost();
+    });
+    return () => unsubscribe();
   }, []);
 
   const handleDel = async (id: string) => {
     try {
       await deleteDoc(doc(db, "add_addresses", id));
-      setAddressData(addressData.filter((item) => item.id !== id));
+      setAddressData(addressData.filter((item, index) => item.id !== id));
       console.log("Document Deleted:", id);
     } catch (error) {
       console.error("Error deleting document:", error);
+    }
+  };
+
+  const updateAddress = async (id: string) => {
+    try {
+      const addressesCollection = collection(db, "add_addresses");
+      const querySnapshot = await getDocs(addressesCollection);
+      const batch = writeBatch(db);
+      querySnapshot.forEach((docSnap) => {
+        const docRef = doc(db, "add_addresses", docSnap.id);
+        if (docSnap.id === id) {
+          batch.update(docRef, { status: true });
+        } else {
+          batch.update(docRef, { status: false });
+        }
+      });
+      await batch.commit();
+      console.log("Address updated successfully!");
+    } catch (error) {
+      console.error("Error updating document:", error);
     }
   };
 
@@ -64,21 +107,22 @@ const AddList = () => {
               <div className="loader"></div>
             ) : addressData.length > 0 ? (
               addressData.map((item, index) => (
-                <>
-                  <div className="cp-dotted-box p-3" key={index}>
+                <div key={index}>
+                  <div className="cp-dotted-box p-3">
                     <ul className="info-list typ-address">
                       <li className="no-margin">
                         <div className="radio-wrap">
                           <input
                             type="radio"
                             name="address"
-                            defaultChecked={item.status}
+                            readOnly
+                            checked={item.status}
                           />
                           <label>
                             <p className="name fw-bolder mb-0">
                               {`${item.firstName} ${item.lastName}`}
                               <small className="tag bg-body-secondary px-2 rounded-pill">
-                                Work
+                                {item.addressType}
                               </small>
                             </p>
                             <p className="address d-grid gap-1 mb-0">
@@ -135,8 +179,16 @@ const AddList = () => {
                         </div>
                       </li>
                     </ul>
+                    {!item.status && (
+                      <button
+                        onClick={() => updateAddress(item.id)}
+                        className="px-2 py-0 btn bg-reddish-orange rounded-1 text-uppercase fw-bolder mb-3"
+                      >
+                        Make Default
+                      </button>
+                    )}
                   </div>
-                </>
+                </div>
               ))
             ) : (
               <div className="no-data-found">No Data Found</div>

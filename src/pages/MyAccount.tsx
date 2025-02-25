@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../config/hooks";
 
 interface DocumentData {
+  isDefault: boolean;
   addressType: string;
   firstName: string;
   lastName: string;
@@ -19,6 +20,8 @@ interface DocumentData {
   status: boolean;
 }
 const MyAccount = () => {
+  const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.auth);
   const [addressData, setAddressData] = useState<DocumentData[]>([]);
 
   useEffect(() => {
@@ -31,15 +34,13 @@ const MyAccount = () => {
           ...(doc.data() as DocumentData),
         };
       });
-      setAddressData(newdata);
+      const AddreessNew = newdata.filter((item) => item.status);
+      setAddressData(AddreessNew);
     };
     getPost();
   }, []);
 
   const addressList = addressData[0];
-
-  const { user } = useAppSelector((state) => state.auth);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
