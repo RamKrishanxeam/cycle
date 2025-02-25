@@ -28,8 +28,6 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: "select_account ",
 });
-// Initialize reCAPTCHA Enterprise
-auth.settings.appVerificationDisabledForTesting = false;
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
