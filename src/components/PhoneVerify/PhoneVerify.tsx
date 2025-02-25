@@ -44,7 +44,6 @@ const PhoneVerify: React.FC = () => {
     }
   }, [showOtpInput, auth]);
 
-  
   useEffect(() => {
     if (reCAPTCHAVerified) {
       const phoneNumber = `+91${values.PNumber}`;
@@ -83,10 +82,9 @@ const PhoneVerify: React.FC = () => {
           const confirmationResult = window.confirmationResult;
           const result = await confirmationResult.confirm(inputOtp);
           console.log(result, "result");
-
-          //   if (result.user.accessToken) {
-          //     navigate("/");
-          //   }
+          if (result.user.accessToken) {
+            navigate("/");
+          }
         } catch (error: any) {
           console.log("Invalid OTP. Please try again.");
           if (error.code === "auth/invalid-verification-code") {
@@ -133,11 +131,11 @@ const PhoneVerify: React.FC = () => {
                     {errorMessage}
                   </div>
                 )}
-                {successMessage && (
+                {/* {successMessage && (
                   <div className="alert alert-success py-2 d-inline-block">
                     {successMessage}
                   </div>
-                )}
+                )} */}
                 <div className="mb-3 mt-3">
                   <label className="form-label">Phone Number</label>
                   <input
@@ -177,69 +175,50 @@ const PhoneVerify: React.FC = () => {
               </>
             ) : (
               <>
-                {!reCAPTCHAVerified && (
-                  <div className="alert alert-danger py-2 d-inline-block">
-                    Please complete the ReCAPTCHA
-                  </div>
-                )}
                 <div className="">
                   <label className="form-label">Verify OTP</label>
                   <div className="d-flex gap-2 mb-3">
-                    {!reCAPTCHAVerified
-                      ? otp.map((_, index) => (
-                          <input
-                            key={index}
-                            type="text"
-                            className="form-control shadow-none text-dark bg-transparent border-0 border-bottom rounded-0 text-white"
-                            maxLength={0}
-                            name="otp"
-                            value={otp[index]}
-                            onChange={(e) =>
-                              handleOtpChange(index, e.target.value)
+                    {!reCAPTCHAVerified ? (
+                      <div
+                        id="recaptcha"
+                        className="position-relative"
+                        style={{ zIndex: "111" }}
+                      ></div>
+                    ) : (
+                      otp.map((_, index) => (
+                        <input
+                          key={index}
+                          ref={(el) => {
+                            inputs.current[index] = el;
+                          }}
+                          type="text"
+                          className="form-control shadow-none text-dark bg-transparent border-0 border-bottom rounded-0 text-white"
+                          maxLength={1}
+                          name="otp"
+                          value={otp[index]}
+                          onChange={(e) =>
+                            handleOtpChange(index, e.target.value)
+                          }
+                          onKeyDown={(e) => {
+                            if (
+                              e.key === "Backspace" &&
+                              !otp[index] &&
+                              index > 0
+                            ) {
+                              inputs.current[index - 1]?.focus();
                             }
-                            style={{
-                              width: "40px",
-                              height: "40px",
-                              textAlign: "center",
-                              fontSize: "18px",
-                              border: "1px solid #ccc",
-                              borderRadius: "4px",
-                            }}
-                          />
-                        ))
-                      : otp.map((_, index) => (
-                          <input
-                            key={index}
-                            ref={(el) => {
-                              inputs.current[index] = el;
-                            }}
-                            type="text"
-                            className="form-control shadow-none text-dark bg-transparent border-0 border-bottom rounded-0 text-white"
-                            maxLength={1}
-                            name="otp"
-                            value={otp[index]}
-                            onChange={(e) =>
-                              handleOtpChange(index, e.target.value)
-                            }
-                            onKeyDown={(e) => {
-                              if (
-                                e.key === "Backspace" &&
-                                !otp[index] &&
-                                index > 0
-                              ) {
-                                inputs.current[index - 1]?.focus();
-                              }
-                            }}
-                            style={{
-                              width: "40px",
-                              height: "40px",
-                              textAlign: "center",
-                              fontSize: "18px",
-                              border: "1px solid #ccc",
-                              borderRadius: "4px",
-                            }}
-                          />
-                        ))}
+                          }}
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            textAlign: "center",
+                            fontSize: "18px",
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                          }}
+                        />
+                      ))
+                    )}
                     {errors.otp && touched.otp && (
                       <div className="error-message">
                         <span className="material-symbols-outlined">error</span>
@@ -270,13 +249,6 @@ const PhoneVerify: React.FC = () => {
           </>
         )}
       </Formik>
-      {showOtpInput && (
-        <div
-          id="recaptcha"
-          className="position-relative"
-          style={{ zIndex: "111" }}
-        ></div>
-      )}
     </>
   );
 };
