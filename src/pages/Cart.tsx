@@ -1,6 +1,7 @@
 import Layout from "../layout/Layout";
 import "../index.css";
 import { useState } from "react";
+import { Button } from "../components/ui/Button";
 
 const Cart = () => {
   const [add, setAdd] = useState<number>(1);
@@ -105,13 +106,15 @@ const Cart = () => {
                     </span>
                   </div>
                   <hr className="my-2" />
-                  <div className="flex justify-between mb-2">
+                  <div className="flex justify-between mb-4">
                     <span className="font-semibold">Total</span>
                     <span className="font-semibold">
                       ₹{calculatePrice(add)}
                     </span>
                   </div>
-                  <button className="btn bg-reddish-orange">Checkout</button>
+                  <div>
+                  <Button variant="default">Checkout</Button>
+                  </div>
                 </div>
               </div>
             </div>

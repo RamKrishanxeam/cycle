@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../config/hooks";
 import FacebookLogin from "../components/FacebookLogin/FacebookLogin";
 import PhoneVerify from "../components/PhoneVerify/PhoneVerify";
+import { Input } from "../components/ui/Input";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -66,9 +67,8 @@ const Login = () => {
                       <>
                         <div className="mb-3">
                           <label className="form-label">Email</label>
-                          <input
+                          <Input 
                             type="text"
-                            className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                             placeholder="Enter Email Address"
                             name="email"
                             onChange={(e) => {
@@ -89,7 +89,7 @@ const Login = () => {
                         </div>
                         <div className="mb-3">
                           <label className="form-label">Password</label>
-                          <input
+                          <Input 
                             type="password"
                             className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                             placeholder="Enter Password"
