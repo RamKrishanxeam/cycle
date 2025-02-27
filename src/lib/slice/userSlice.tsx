@@ -113,7 +113,7 @@ export const userSlice = createSlice({
     builder.addCase(FacebookLoginAuth.rejected, (state, action) => {
       state.loading = false;
       state.errorMessage =
-        "Invalid login. Please try again or Facebook Login! 🚀";
+        "";
     });
 
     // send OTP
@@ -130,7 +130,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(phoneNumberUser.rejected, (state, action) => {
       state.loading = false;
-      state.errorMessage = "Please try again or send OTP! 🚀";
+      state.errorMessage = "";
     });
   },
 });
