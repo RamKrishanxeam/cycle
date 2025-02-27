@@ -9,6 +9,7 @@ import MyAccount from "./pages/MyAccount";
 import AddAddress from "./pages/AddAddress";
 import AddList from "./pages/AddList";
 import EditAddress from "./pages/EditAddress";
+import Cart from "./pages/Cart";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="sign-up" element={<Signup />} />
+        <Route path="cart" element={<Cart />} />
         <Route path="account-show" element={<MyAccount />} />
         <Route path="add-address" element={<AddAddress />} />
         <Route path="address-list" element={<AddList />} />

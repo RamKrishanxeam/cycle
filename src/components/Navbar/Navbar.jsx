@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import mainLogo from "../../assets/images/logo.svg";
 import { useEffect, useState } from "react";
 import { logout } from "../../lib/slice/userSlice";
-import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../config/hooks";
 
 const Navbar = () => {
@@ -33,126 +32,116 @@ const Navbar = () => {
             : "navbar-section-others"
         }`}
       >
-        <nav className="navbar navbar-expand-lg w-100">
-          <div className="container">
-            <Link className="navbar-brand" to="/">
-              <img src={mainLogo} alt="navbar-brand" className="img-fluid" />
+        <nav className="w-full">
+          <div className="container mx-auto flex justify-between items-center p-3">
+            <Link to="/" className="flex-shrink-0">
+              <img src={mainLogo} alt="navbar-brand" className="h-10" />
             </Link>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div
-              className="collapse navbar-collapse align-items-center"
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav mx-auto">
-                <li className="nav-item">
+            <button className="lg:hidden p-2 border rounded-md">☰</button>
+            <div className="hidden lg:flex align-baseline space-x-6">
+              <ul className="flex items-center space-x-4 text-gray-700">
+                <li>
                   <Link
-                    className="nav-link active"
-                    aria-current="page"
+                    className="text-[#fff] hover:text-red-500 text-decoration-none text-uppercase text-[14px] font-semibold"
                     to="/Bikes"
                   >
                     Bikes
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
+                <li>
+                  <a
+                    className="text-[#fff] hover:text-red-500 text-decoration-none text-uppercase text-[14px] font-semibold"
+                    href="#"
+                  >
                     Accessories
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
+                <li>
+                  <a
+                    className="text-[#fff] hover:text-red-500 text-decoration-none text-uppercase text-[14px] font-semibold"
+                    href="#"
+                  >
                     Bestsellers
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    cannondale
+                <li>
+                  <a
+                    className="text-[#fff] hover:text-red-500 text-decoration-none text-uppercase text-[14px] font-semibold"
+                    href="#"
+                  >
+                    Cannondale
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
+                <li>
+                  <a
+                    className="text-[#fff] hover:text-red-500 text-decoration-none text-uppercase text-[14px] font-semibold"
+                    href="#"
+                  >
                     Electric Bikes
                   </a>
                 </li>
               </ul>
-              <div className="material-search d-flex align-items-center gap-4 mt-2">
-                <div className="search">
-                  <span className="material-symbols-outlined text-reddish-orange fw-bolder">
-                    search
-                  </span>
-                </div>
-                <div className="location_on">
-                  <span className="material-symbols-outlined text-reddish-orange fw-bolder">
-                    location_on
-                  </span>
-                </div>
-                <div className="shopping_cart">
-                  <span className="material-symbols-outlined text-reddish-orange fw-bolder">
-                    shopping_cart
-                  </span>
-                </div>
-                <div className="person position-relative">
-                  {GoogleAndfacebook?.displayName ? (
-                    <div className="logout-menu-container">
-                      <Link
-                        to="#"
-                        className="profile-icon"
-                        onClick={() => setShowMenu(!showMenu)}
-                      >
-                        <img
-                          src={
-                            GoogleAndfacebook.photoURL ||
-                            "https://via.placeholder.com/96"
-                          }
-                          alt="GoogleAndfacebook"
-                          className="img-fluid rounded-pill"
-                          style={{ width: "30px" }}
-                        />
-                      </Link>
-                    </div>
-                  ) : user !== null ? (
-                    <>
-                      <span
-                        onClick={() => setShowMenu(!showMenu)}
-                        className="material-symbols-outlined text-reddish-orange fw-bolder"
-                      >
-                        logout
-                      </span>
-                    </>
-                  ) : (
-                    <Link to="/login">
-                      <span className="material-symbols-outlined text-reddish-orange fw-bolder">
-                        person
-                      </span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="search">
+                <span className="material-symbols-outlined text-reddish-orange fw-bolder">
+                  search
+                </span>
+              </div>
+              <div className="location_on">
+                <span className="material-symbols-outlined text-reddish-orange fw-bolder">
+                  location_on
+                </span>
+              </div>
+              <div className="shopping_cart">
+                <span className="material-symbols-outlined text-reddish-orange fw-bolder">
+                  shopping_cart
+                </span>
+              </div>
+              <div className="relative">
+                {GoogleAndfacebook?.displayName ? (
+                  <div>
+                    <Link to="#" onClick={() => setShowMenu(!showMenu)}>
+                      <img
+                        src={
+                          GoogleAndfacebook.photoURL ||
+                          "https://via.placeholder.com/96"
+                        }
+                        alt="User"
+                        className="w-8 h-8 rounded-full"
+                      />
                     </Link>
-                  )}
-                  {user !== null && showMenu && (
-                    <div className="logout-menu">
-                      <Link to="/account-show" className="text-decoration-none">
-                        <span className="text-white text-decoration-none">
-                          My Profile
-                        </span>
-                      </Link>
-                      <button
-                        className="logout-btn"
-                        onClick={() => {
-                          dispatch(logout());
-                        }}
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
+                  </div>
+                ) : user !== null ? (
+                  <span
+                    onClick={() => setShowMenu(!showMenu)}
+                    className="material-symbols-outlined text-reddish-orange fw-bolder"
+                  >
+                    logout
+                  </span>
+                ) : (
+                  <Link to="/login">
+                    <span className="material-symbols-outlined text-reddish-orange fw-bolder">
+                      person
+                    </span>
+                  </Link>
+                )}
+                {user !== null && showMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md">
+                    <Link
+                      to="/account-show"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-decoration-none"
+                    >
+                      My Profile
+                    </Link>
+                    <button
+                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={() => dispatch(logout())}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
