@@ -3,21 +3,25 @@ import Layout from "../layout/Layout";
 import { Formik } from "formik";
 import { SignUpSchema } from "../config/validation";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignUpUser } from "../lib/thunk/userThunk";
 import { useAppDispatch, useAppSelector } from "../config/hooks";
-
-
+import { useEffect } from "react";
 
 const Signup: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
 
   const { user, errorMessage, successMessage } = useAppSelector(
     (state) => state.auth
   );
 
- 
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => navigate("/"), 1000);
+    }
+  }, [user, navigate]);
+
   return (
     <>
       <Layout>

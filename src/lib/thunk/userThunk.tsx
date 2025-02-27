@@ -79,12 +79,9 @@ export const SignUpUser = createAsyncThunk(
           email: values.email,
         };
         await setDoc(doc(db, "users", user.uid), userData, { merge: true });
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 1000);
-
-        return userData;
-      }
+        localStorage.setItem("user", JSON.stringify({ ...userData }));
+        return { ...userData };
+        }
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error);

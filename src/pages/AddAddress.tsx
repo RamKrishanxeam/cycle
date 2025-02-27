@@ -1,13 +1,15 @@
 import Layout from "../layout/Layout";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { stateData } from "../utils/data";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { addressSchema } from "../config/validation";
+import { useState } from "react";
 
 const AddAddress = () => {
   const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState<string>("");
   return (
     <Layout>
       <div className="container">
@@ -16,6 +18,11 @@ const AddAddress = () => {
             <span className="typ-1">Add New</span>
             <span className="cm-line-break typ-2 ms-2">Address</span>
           </h2>
+          {successMessage && (
+            <div className="alert alert-success py-2 d-inline-block">
+              {successMessage}
+            </div>
+          )}
           <div className="w-75">
             <Formik
               initialValues={{
@@ -34,12 +41,14 @@ const AddAddress = () => {
               validationSchema={addressSchema}
               onSubmit={async (values) => {
                 try {
-                  const docRef = await addDoc(
-                    collection(db, "add_addresses"),
-                    values
-                  );
+                  if (!auth.currentUser) return;
+
+                  const docRef = await addDoc(collection(db, "add_addresses"), {
+                    ...values,
+                    userId: auth.currentUser.uid,
+                  });
                   if (docRef.id) {
-                    alert("Data saved successfully!");
+                    setSuccessMessage("Add New Address saved successfully!");
                     setTimeout(() => navigate("/account-show"), 1000);
                   }
                 } catch (error) {

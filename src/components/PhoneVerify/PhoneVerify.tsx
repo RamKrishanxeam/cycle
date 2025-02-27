@@ -191,7 +191,13 @@ const PhoneVerify: React.FC = () => {
                   <label className="form-label">Verify OTP</label>
                   <div className="d-flex gap-2 mb-3">
                     {!reCAPTCHAVerified ? (
-                      <></>
+                      <>
+                        <div
+                          id="recaptcha"
+                          className="position-relative"
+                          style={{ zIndex: "111" }}
+                        ></div>
+                      </>
                     ) : (
                       otp.map((_, index) => (
                         <input
@@ -257,11 +263,6 @@ const PhoneVerify: React.FC = () => {
           </>
         )}
       </Formik>
-      <div
-        id="recaptcha"
-        className="position-relative"
-        style={{ zIndex: "111" }}
-      ></div>
     </>
   );
 };

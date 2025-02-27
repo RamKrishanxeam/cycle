@@ -1,9 +1,11 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
 import Layout from "../layout/Layout";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../config/hooks";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 interface DocumentData {
   isDefault: boolean;
@@ -19,28 +21,38 @@ interface DocumentData {
   phone: string;
   status: boolean;
 }
+
 const MyAccount = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoader] = useState(true);
   const { user } = useAppSelector((state) => state.auth);
   const [addressData, setAddressData] = useState<DocumentData[]>([]);
-
   useEffect(() => {
-    const getPost = async () => {
-      const usersData = collection(db, "add_addresses");
-      const usersnapshot = await getDocs(usersData);
-      const newdata: DocumentData[] = usersnapshot.docs.map((doc) => {
-        return {
-          id: doc.id,
-          ...(doc.data() as DocumentData),
-        };
-      });
-      const AddreessNew = newdata.filter((item) => item.status);
-      setAddressData(AddreessNew);
-    };
-    getPost();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        fetchAddresses(currentUser.uid);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const addressList = addressData[0];
+  const fetchAddresses = async (userId: any) => {
+    const usersData = query(
+      collection(db, "add_addresses"),
+      where("userId", "==", userId)
+    );
+    const usersnapshot = await getDocs(usersData);
+    const newdata: DocumentData[] = usersnapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...(doc.data() as DocumentData),
+      };
+    });
+    const AddreessNew = newdata.filter((item) => item.status);
+    setAddressData(AddreessNew);
+    setIsLoader(false);
+  };
 
   useEffect(() => {
     if (!user) {
@@ -63,15 +75,21 @@ const MyAccount = () => {
                 <ul className="info-list">
                   <li className="info-item mb-3">
                     <p className="info-label">First Name</p>
-                    <span className="info-value">Ram </span>
+                    <span className="info-value">
+                      {(user as any)?.FName || "undefined"}
+                    </span>
                   </li>
                   <li className="info-item mb-3">
                     <p className="info-label">Last Name</p>
-                    <span className="info-value">Kishan</span>
+                    <span className="info-value">
+                      {(user as any)?.LName || "undefined"}
+                    </span>
                   </li>
                   <li className="info-item no-margin">
                     <p className="info-label">Email</p>
-                    <span className="info-value">xeam.designer7@gmail.com</span>
+                    <span className="info-value">
+                      {(user as any)?.email || "undefined"}
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -137,44 +155,45 @@ const MyAccount = () => {
                       <div className="bs-radio">
                         <div className="cp-radio-box typ-address">
                           <div className="radio-wrap">
-                            {addressData.length > 0 ? (
-                              <>
-                                <input
-                                  type="radio"
-                                  name="address"
-                                  defaultChecked={addressList.status}
-                                />
-                                <label>
-                                  <p className="name fw-bolder mb-0">
-                                    {`${
-                                      addressList.firstName +
-                                      " " +
-                                      addressList.lastName
-                                    }`}
-                                    <small className="tag bg-body-secondary px-2 rounded-pill">
-                                      Work
-                                    </small>
-                                  </p>
-
-                                  <p className="address d-grid gap-1 mb-0">
-                                    {addressList.address1},
-                                    <span className="cm-line-break">
-                                      {addressList.address2},
-                                    </span>
-                                    <span className="cm-line-break">
-                                      {addressList.zipCode}
-                                    </span>
-                                  </p>
-                                  <p className="phone-no">
-                                    Mobile:
-                                    <span className="fw-bolder">
-                                      {addressList.phone}
-                                    </span>
-                                  </p>
-                                </label>
-                              </>
-                            ) : (
+                            {isLoading ? (
                               <div className="loader"></div>
+                            ) : addressData.length > 0 ? (
+                              addressData.map((value, index) => (
+                                <React.Fragment key={index}>
+                                  <input
+                                    type="radio"
+                                    name="address"
+                                    defaultChecked={value.status}
+                                  />
+                                  <label>
+                                    <p className="name fw-bolder mb-0">
+                                      {`${value.firstName} ${value.lastName}`}
+                                      <small className="tag bg-body-secondary px-2 rounded-pill">
+                                        {value.addressType || "Work"}
+                                      </small>
+                                    </p>
+
+                                    <p className="address d-grid gap-1 mb-0">
+                                      {value.address1},
+                                      <span className="cm-line-break">
+                                        {value.address2},
+                                      </span>
+                                      <span className="cm-line-break">
+                                        {value.zipCode}
+                                      </span>
+                                    </p>
+
+                                    <p className="phone-no">
+                                      Mobile:
+                                      <span className="fw-bolder">
+                                        {value.phone}
+                                      </span>
+                                    </p>
+                                  </label>
+                                </React.Fragment>
+                              ))
+                            ) : (
+                              <div className="no-data-found">No Data Found</div>
                             )}
                           </div>
                         </div>

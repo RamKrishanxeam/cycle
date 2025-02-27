@@ -4,8 +4,11 @@ import { stateData } from "../utils/data";
 import { Formik } from "formik";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
+import { useState } from "react";
 
 const EditAddress = () => {
+  const [successMessage, setSuccessMessage] = useState<string>("");
+
   const location = useLocation();
   const navigate = useNavigate();
   const editData = location.state?.item;
@@ -18,6 +21,11 @@ const EditAddress = () => {
             <span className="typ-1">Edit New</span>
             <span className="cm-line-break typ-2 ms-2">Address</span>
           </h2>
+          {successMessage && (
+            <div className="alert alert-success py-2 d-inline-block">
+              {successMessage}
+            </div>
+          )}
           <div className="w-75">
             <Formik
               initialValues={{
@@ -37,7 +45,7 @@ const EditAddress = () => {
                 try {
                   const docRef = doc(db, "add_addresses", editData.id);
                   await updateDoc(docRef, values);
-                  console.log("Document updated successfully!");
+                  setSuccessMessage("Address updated successfully!");
                   navigate("/address-list");
                 } catch (error) {
                   console.error("Error updating document:", error);

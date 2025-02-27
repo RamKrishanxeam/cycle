@@ -6,11 +6,14 @@ import {
   doc,
   getDocs,
   onSnapshot,
+  query,
   updateDoc,
+  where,
   writeBatch,
 } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { Link } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface DocumentData {
   isDefault: boolean;
@@ -50,19 +53,30 @@ const AddList = () => {
   //   getPost();
   // }, []);
   useEffect(() => {
-    const usersData = collection(db, "add_addresses");
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        fetchAddresses(currentUser.uid);
+      }
+    });
 
+    return () => unsubscribe();
+  }, []);
+
+  const fetchAddresses = (userId: any) => {
+    const usersData = query(
+      collection(db, "add_addresses"),
+      where("userId", "==", userId)
+    );
     const unsubscribe = onSnapshot(usersData, (snapshot) => {
       const newData: DocumentData[] = snapshot.docs.map((doc) => {
         const data = doc.data() as Omit<DocumentData, "id">;
         return { id: doc.id, ...data };
       });
-      console.log("@@@ UPDATE: ", newData);
       setAddressData(newData);
       setIsLoader(false);
     });
     return () => unsubscribe();
-  }, []);
+  };
 
   const handleDel = async (id: string) => {
     try {
@@ -191,7 +205,7 @@ const AddList = () => {
                 </div>
               ))
             ) : (
-              <div className="no-data-found">No Data Found</div>
+              <div className="no-data-found mb-3">No Data Found</div>
             )}
             <div className="cp-dotted-box p-3">
               <ul className="info-list typ-address ">

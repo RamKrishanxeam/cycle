@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import "./styles/global.css";
+// import "./index.css";
 import { AuthProvider } from "./config/authProvider";
 import { Provider } from "react-redux";
 import { persistor, store } from "./lib/store";
