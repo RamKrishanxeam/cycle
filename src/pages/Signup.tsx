@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignUpUser } from "../lib/thunk/userThunk";
 import { useAppDispatch, useAppSelector } from "../config/hooks";
 import { useEffect } from "react";
+import { Input } from "../components/ui/Input";
 
 const Signup: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -68,14 +69,14 @@ const Signup: React.FC = () => {
                     )}
                     <div className="mb-4">
                       <label className="form-label">First Name*</label>
-                      <input
+                      <Input 
                         type="text"
                         className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter First Name"
                         name="FName"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.FName}
+                       value={values.FName}
                       />
                       {errors.FName && touched.FName && (
                         <div className="error-message">
@@ -108,7 +109,7 @@ const Signup: React.FC = () => {
                     </div>
                     <div className="mb-4 position-relative">
                       <label className="form-label">Mobile*</label>
-                      <input
+                      <Input
                         type="text"
                         className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Phone Number"
@@ -129,7 +130,7 @@ const Signup: React.FC = () => {
                     </div>
                     <div className="mb-4">
                       <label className="form-label">Email*</label>
-                      <input
+                      <Input
                         type="text"
                         className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Email Address"
@@ -149,7 +150,7 @@ const Signup: React.FC = () => {
                     </div>
                     <div className="mb-4">
                       <label className="form-label">Password*</label>
-                      <input
+                      <Input
                         type="password"
                         className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Password"
@@ -169,7 +170,7 @@ const Signup: React.FC = () => {
                     </div>
                     <div className="mb-4">
                       <label className="form-label">Confirm Password*</label>
-                      <input
+                      <Input
                         type="password"
                         className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                         placeholder="Enter Confirm Password"
