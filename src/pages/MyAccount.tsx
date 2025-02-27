@@ -97,12 +97,12 @@ const MyAccount = () => {
             <div className="dashboardCards col-md-9">
               <div className="title-wrap">
                 <h5 className="fw-semibold">Order History</h5>
-                <a
+                <Link
                   className="check-orinage text-decoration-none  fw-semibold"
-                  href=""
+                  to="/cart"
                 >
                   View All
-                </a>
+                </Link>
               </div>
               <div className="cp-cart">
                 <ul className="prodcut-list p-0">
