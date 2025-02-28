@@ -61,7 +61,7 @@ const Cart = () => {
     };
 
     fetch(
-      "http://localhost:5000/api/payments/create-payment-session",
+      "https://node-js-9c2b.onrender.com/api/payments/create-payment-session",
       requestOptions
     )
       .then((response) => response.json())
