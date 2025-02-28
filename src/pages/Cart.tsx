@@ -1,11 +1,21 @@
+import { Stripe, loadStripe } from "@stripe/stripe-js";
+
 import Layout from "../layout/Layout";
-import "../index.css";
 import { useState } from "react";
 import { Button } from "../components/ui/Button";
 import { Link } from "react-router-dom";
+import "../index.css";
+import { useAppSelector } from "../config/hooks";
+
+const stripePromise: Promise<Stripe | null> = loadStripe(
+  "pk_test_51Qx4s1RoJwEd9KthJWqjr0Q6q187hs3Lu2nd6RRZO0QhFF1cxZ47MqFD0BsHFuweoi2hfYgAYevcWo3jvFC1JCNl00VxjFQoT6"
+);
 
 const Cart = () => {
   const [add, setAdd] = useState<number>(1);
+  const { user } = useAppSelector((state) => state.auth);
+  const username = user?.email?.split("@")[0] ?? "Unknown";
+
   const calculatePrice = (quantity: number) => {
     const basePrice = 10000;
     let discount = 0;
@@ -21,6 +31,53 @@ const Cart = () => {
     }
     const discountedPrice = basePrice - (basePrice * discount) / 100;
     return discountedPrice * quantity;
+  };
+
+  const handleClick = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const line_items = [
+      {
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: `${username}`,
+          },
+          unit_amount: Number(calculatePrice(add) * 100),
+        },
+        quantity: 1,
+      },
+    ];
+
+    const raw = JSON.stringify({
+      line_items,
+    });
+
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+    };
+
+    fetch(
+      "https://node-js-9c2b.onrender.com/api/payments/create-payment-session",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then(async (result) => {
+        console.log(result);
+        const stripe: Stripe | null = await stripePromise;
+        if (stripe) {
+          const { error } = await stripe.redirectToCheckout({
+            sessionId: result.id,
+          });
+          if (error) {
+            console.log(error);
+          }
+        }
+      })
+      .catch((error) => console.error(error));
   };
   return (
     <>
@@ -130,7 +187,9 @@ const Cart = () => {
                   <span>Total cost</span>
                   <span>₹{calculatePrice(add)}</span>
                 </div>
-                <Button variant="default">Checkout</Button>
+                <Button variant="default" onClick={handleClick}>
+                  Checkout
+                </Button>
               </div>
             </div>
           </div>
