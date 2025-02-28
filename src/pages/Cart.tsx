@@ -27,14 +27,14 @@ const Cart = () => {
       <Layout>
         <div className="container mx-auto mt-10">
           <div className="sm:flex shadow-md my-10">
-            <div className="w-full  sm:w-3/4 bg-white px-10 py-10">
-              <div className="flex justify-between border-b pb-8">
+            <div className="w-full  sm:w-3/4 bg-white px-8 py-8">
+              <div className="flex justify-between border-b">
                 <h2 className="text-2xl font-bold">
                   <span className="text-gray-800">Shopping</span>
                   <span className="block text-gray-600">Cart</span>
                 </h2>
               </div>
-              <div className="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50 gap-4">
+              <div className="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50 gap-3">
                 <div className="w-80 h-auto flex-shrink-0 border p-3">
                   <img
                     src="https://www.firefoxbikes.com/dw/image/v2/BGQH_PRD/on/demandware.static/-/Sites-firefox-master/default/dw8a5d0046/all_images/112794341_main/Black/2.png?sh=216&amp;sfrm=png"
@@ -47,10 +47,7 @@ const Cart = () => {
                     className="md:hidden w-full h-full object-center object-cover"
                   />
                 </div>
-                <div className="md:pl-3 md:w-8/12 2xl:w-3/4 flex flex-col justify-center">
-                  <p className="text-xs leading-3 text-gray-800 md:pt-0 pt-4">
-                    RF293
-                  </p>
+                <div className="md:w-8/12 2xl:w-3/4 flex flex-col justify-center">
                   <div className="flex items-center justify-between w-full">
                     <p className="text-base font-black leading-none text-gray-800">
                       Luxe card holder
@@ -83,9 +80,6 @@ const Cart = () => {
                   </p>
                   <p className="text-xs leading-3 text-gray-600 py-4">
                     Color: Black
-                  </p>
-                  <p className="w-96 text-xs leading-3 text-gray-600">
-                    Composition: 100% calf leather
                   </p>
                   <div className="flex items-center justify-between pt-5">
                     <div className="flex itemms-center">
