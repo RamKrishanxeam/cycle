@@ -94,9 +94,11 @@ const Navbar = () => {
                 </span>
               </div>
               <div className="shopping_cart">
-                <span className="material-symbols-outlined text-reddish-orange fw-bolder">
-                  shopping_cart
-                </span>
+                <Link to="/cart">
+                  <span className="material-symbols-outlined text-reddish-orange fw-bolder">
+                    shopping_cart
+                  </span>
+                </Link>
               </div>
               <div className="relative">
                 {GoogleAndfacebook?.displayName ? (
