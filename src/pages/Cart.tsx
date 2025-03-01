@@ -1,7 +1,7 @@
 import { Stripe, loadStripe } from "@stripe/stripe-js";
 
 import Layout from "../layout/Layout";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "../components/ui/Button";
 import { Link } from "react-router-dom";
 import "../index.css";
@@ -32,8 +32,7 @@ const Cart = () => {
     const discountedPrice = basePrice - (basePrice * discount) / 100;
     return discountedPrice * quantity;
   };
-
-  const handleClick = async () => {
+  const handleClick = useCallback(() => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -78,7 +77,7 @@ const Cart = () => {
         }
       })
       .catch((error) => console.error(error));
-  };
+  }, []);
   return (
     <>
       <Layout>
