@@ -12,6 +12,7 @@ import EditAddress from "./pages/EditAddress";
 import Cart from "./pages/Cart";
 import PaymentSuccessful from "./pages/PaymentSuccessful";
 import PaymentCencel from "./pages/PaymentCencel";
+import GoogleDrive from "./pages/GoogleDrive";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="login" element={<Login />} />
         <Route path="sign-up" element={<Signup />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="google-drive" element={<GoogleDrive />} />
         <Route path="account-show" element={<MyAccount />} />
         <Route path="success" element={<PaymentSuccessful />} />
         <Route path="cancel" element={<PaymentCencel />} />

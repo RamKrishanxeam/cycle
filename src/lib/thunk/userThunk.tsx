@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   FacebookAuthProvider,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
   signInWithPopup,
@@ -81,7 +82,7 @@ export const SignUpUser = createAsyncThunk(
         await setDoc(doc(db, "users", user.uid), userData, { merge: true });
         localStorage.setItem("user", JSON.stringify({ ...userData }));
         return { ...userData };
-        }
+      }
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error);
@@ -95,8 +96,14 @@ export const logGoogleUser = createAsyncThunk(
     try {
       const response = await signInWithGooglePopup();
       const user = response.user;
+      const credential = GoogleAuthProvider.credentialFromResult(response);
+      const accessToken = credential?.accessToken;
+      const userDetails = Object.assign({}, user, { oAuth_token: accessToken });
       if (user.emailVerified) {
-        localStorage.setItem("userGoogleAndFacebook", JSON.stringify(user));
+        localStorage.setItem(
+          "userGoogleAndFacebook",
+          JSON.stringify(userDetails)
+        );
         return user;
       }
     } catch (error) {
@@ -113,8 +120,12 @@ export const FacebookLoginAuth = createAsyncThunk(
       const user = result.user;
       const credential = FacebookAuthProvider.credentialFromResult(result);
       const accessToken = credential?.accessToken;
+      const userDetails = Object.assign({}, user, { oAuth_token: accessToken });
       if (user.uid) {
-        localStorage.setItem("userGoogleAndFacebook", JSON.stringify(user));
+        localStorage.setItem(
+          "userGoogleAndFacebook",
+          JSON.stringify(userDetails)
+        );
         return user;
       }
     } catch (error) {

@@ -43,7 +43,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     className="text-[#fff] hover:text-red-500 text-decoration-none text-uppercase text-[14px] font-semibold"
-                    to="/Bikes"
+                    to="/google-drive"
                   >
                     Bikes
                   </Link>
