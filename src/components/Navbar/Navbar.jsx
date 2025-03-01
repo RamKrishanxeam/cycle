@@ -48,6 +48,7 @@ const Navbar = () => {
                     Bikes
                   </Link>
                 </li>
+
                 <li>
                   <a
                     className="text-[#fff] hover:text-red-500 text-decoration-none text-uppercase text-[14px] font-semibold"
