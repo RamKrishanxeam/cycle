@@ -1,9 +1,9 @@
 import { Stripe, loadStripe } from "@stripe/stripe-js";
 
 import Layout from "../layout/Layout";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "../components/ui/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
 import { useAppSelector } from "../config/hooks";
 
@@ -12,9 +12,16 @@ const stripePromise: Promise<Stripe | null> = loadStripe(
 );
 
 const Cart = () => {
+  const navigate = useNavigate();
   const [add, setAdd] = useState<number>(1);
   const { user } = useAppSelector((state) => state.auth);
   const username = user?.email?.split("@")[0] ?? "Unknown";
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const calculatePrice = (quantity: number) => {
     const basePrice = 10000;
