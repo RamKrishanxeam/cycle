@@ -55,6 +55,7 @@ const Cart = () => {
         quantity: 1,
       },
     ];
+    console.log(line_items, "line_items");
 
     const raw = JSON.stringify({
       line_items,
@@ -64,6 +65,8 @@ const Cart = () => {
       method: "POST",
       headers: myHeaders,
       body: raw,
+      mode: "cors",
+      credentials: "omit",
     };
 
     fetch(
@@ -72,19 +75,21 @@ const Cart = () => {
     )
       .then((response) => response.json())
       .then(async (result) => {
-        console.log(result);
+        console.log(result, "result");
         const stripe: Stripe | null = await stripePromise;
         if (stripe) {
-          const { error } = await stripe.redirectToCheckout({
-            sessionId: result.id,
-          });
-          if (error) {
-            console.log(error);
-          }
+          setTimeout(async () => {
+            const { error } = await stripe.redirectToCheckout({
+              sessionId: result.id,
+            });
+            if (error) {
+              console.log(error);
+            }
+          }, 2000);
         }
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [calculatePrice]);
   return (
     <>
       <Layout>
