@@ -4,11 +4,15 @@ import Layout from "../layout/Layout";
 
 const GoogleDrive = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [errorShow, setErrorShow] = useState<boolean | null>(false);
+  const [successShow, setSuccessShow] = useState<boolean | null>(false);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
     setFile(selectedFile);
+    setErrorShow(true);
   };
-  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
     const userDetails = localStorage.getItem("userGoogleAndFacebook");
@@ -43,10 +47,12 @@ const GoogleDrive = () => {
           },
         }
       );
-
-      console.log("File uploaded successfully:", response);
+      setSuccessShow(true);
       if (response.data) {
-        setFile(null);
+        setTimeout(() => {
+          setFile(null);
+          setSuccessShow(false);
+        }, 1000);
         return response.data;
       }
     } catch (error) {
@@ -59,10 +65,19 @@ const GoogleDrive = () => {
       <Layout>
         <div className="bg-black flex items-center justify-center min-h-screen">
           <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full">
+            {accessToken == null && errorShow && (
+              <div className="alert alert-danger py-2 d-inline-block">
+                Google login error when trying to upload a file
+              </div>
+            )}
+            {accessToken && successShow && (
+              <div className="alert alert-success py-2 d-inline-block mb-3 w-full m-auto text-center">
+                File uploaded successfully!
+              </div>
+            )}
             <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
               Upload Your File
             </h2>
-
             <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-blue-500 transition-all duration-300">
               <svg
                 className="w-16 h-16 text-blue-500 mb-4 transition-all duration-300"
