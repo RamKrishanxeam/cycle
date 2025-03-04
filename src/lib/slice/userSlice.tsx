@@ -146,7 +146,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(YahooLoginAuth.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload as { email: string };
+      state.user = action.payload ?? null;
       state.successMessage =
         "Yahoo Login successful! Welcome to the Firefox Tribe! 🚀";
     });
