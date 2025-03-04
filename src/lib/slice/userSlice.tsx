@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   FacebookLoginAuth,
+  githubLoginAuth,
   logGoogleUser,
   loginUser,
   phoneNumberUser,
@@ -115,7 +116,25 @@ export const userSlice = createSlice({
       state.errorMessage =
         "Account exists with Google. Please sign in with Google first";
     });
-
+    // githubLoginAuth
+    builder.addCase(githubLoginAuth.pending, (state, action) => {
+      state.loading = true;
+      state.errorMessage = null;
+      state.successMessage = null;
+      state.user = null;
+    });
+    builder.addCase(githubLoginAuth.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload as { email: string };
+      state.successMessage =
+        "Github Login successful! Welcome to the Firefox Tribe! 🚀";
+    });
+    builder.addCase(githubLoginAuth.rejected, (state, action) => {
+      state.loading = false;
+      state.errorMessage =
+        "Account exists with Google. Please sign in with Google first";
+      state.user = null;
+    });
     // send OTP
     builder.addCase(phoneNumberUser.pending, (state, action) => {
       state.loading = true;

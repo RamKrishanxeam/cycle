@@ -11,6 +11,7 @@ import FacebookLogin from "../components/FacebookLogin/FacebookLogin";
 import PhoneVerify from "../components/PhoneVerify/PhoneVerify";
 import { Input } from "../components/ui/Input";
 import { logout } from "../lib/slice/userSlice";
+import { GithubLogin } from "../components/GithubLogin/GithubLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -154,6 +155,9 @@ const Login = () => {
                         </li>
                         <li className="social-item">
                           <GoogleLogin />
+                        </li>
+                        <li className="social-item">
+                          <GithubLogin />
                         </li>
                       </ul>
                     </div>
