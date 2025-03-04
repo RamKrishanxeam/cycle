@@ -6,6 +6,7 @@ import {
   loginUser,
   phoneNumberUser,
   SignUpUser,
+  YahooLoginAuth,
 } from "../thunk/userThunk";
 
 interface AuthStateType {
@@ -130,6 +131,26 @@ export const userSlice = createSlice({
         "Github Login successful! Welcome to the Firefox Tribe! 🚀";
     });
     builder.addCase(githubLoginAuth.rejected, (state, action) => {
+      state.loading = false;
+      state.errorMessage =
+        "Account exists with Google. Please sign in with Google first";
+      state.user = null;
+    });
+
+     // Yahoo Login Auth
+     builder.addCase(YahooLoginAuth.pending, (state, action) => {
+      state.loading = true;
+      state.errorMessage = null;
+      state.successMessage = null;
+      state.user = null;
+    });
+    builder.addCase(YahooLoginAuth.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload as { email: string };
+      state.successMessage =
+        "Yahoo Login successful! Welcome to the Firefox Tribe! 🚀";
+    });
+    builder.addCase(YahooLoginAuth.rejected, (state, action) => {
       state.loading = false;
       state.errorMessage =
         "Account exists with Google. Please sign in with Google first";
