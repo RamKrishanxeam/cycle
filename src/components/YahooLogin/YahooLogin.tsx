@@ -1,21 +1,30 @@
-import { Link } from "react-router-dom";
-import { auth, signInWithGooglePopup, yahooAuth } from "../../config/firebase";
+import { Link, useNavigate } from "react-router-dom";
+import yahoo from "../../assets/images/yahoo-login.svg";
+import { auth,  yahooAuth } from "../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
+import { useAppDispatch, useAppSelector } from "../../config/hooks";
+import { useEffect } from "react";
+import { YahooLoginAuth } from "../../lib/thunk/userThunk";
 
 const YahooLogin = () => {
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, yahooAuth);
-      const user = result.user;
-      console.log("Yahoo User Info:", user);
-    } catch (error: any) {
-      console.error("Error during Yahoo login:", error.message);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (user) {
+      const timer = setTimeout(() => navigate("/"), 1000);
+      return () => clearTimeout(timer);
     }
-  };
+  }, [user, navigate]);
+  
+   const handleYahooLogin = () => {
+    dispatch(YahooLoginAuth());
+    };
   return (
     <>
-      <Link to="" onClick={handleGoogleLogin}>
-        YahooLogin
+      <Link to="" onClick={handleYahooLogin}>
+      <img src={yahoo} alt="yahoo" className="img-fluid" />
       </Link>
     </>
   );
