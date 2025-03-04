@@ -30,12 +30,8 @@ const PhoneVerify: React.FC = () => {
 
   useEffect(() => {
     const recaptchaContainer = document.getElementById("recaptcha-container");
-    if (!recaptchaContainer) {
-      console.error("reCAPTCHA container missing from DOM");
-      return;
-    }
 
-    if (!recaptchaVerifierRef.current) {
+    if (!recaptchaVerifierRef.current && recaptchaContainer) {
       recaptchaVerifierRef.current = new RecaptchaVerifier(
         auth,
         "recaptcha-container",
