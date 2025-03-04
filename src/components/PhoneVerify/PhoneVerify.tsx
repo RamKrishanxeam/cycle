@@ -29,30 +29,54 @@ const PhoneVerify: React.FC = () => {
   const appVerifier = recaptchaVerifierRef.current;
 
   useEffect(() => {
-    const recaptchaElement = document.getElementById("recaptcha");
-    if (recaptchaElement && !recaptchaVerifierRef.current) {
-      recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "recaptcha", {
-        size: "normal",
-        siteKey: "6Lcx5eEqAAAAAKCNerFhawMecTFrc20ecGy7AOUt",
-        callback: () => {
-          console.log("ReCAPTCHA Verified");
-          setReCAPTCHAVerified(true);
-        },
-        "expired-callback": () => {
-          console.log("ReCAPTCHA expired, please try again");
-          setReCAPTCHAVerified(false);
-        },
-      });
+    const recaptchaContainer = document.getElementById("recaptcha-container");
+    if (!recaptchaContainer) {
+      console.error("reCAPTCHA container missing from DOM");
+      return;
+    }
+
+    if (!recaptchaVerifierRef.current) {
+      recaptchaVerifierRef.current = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "normal", // "normal" for checkbox, or "invisible" if preferred
+          callback: () => {
+            console.log("reCAPTCHA v2 verified");
+            setReCAPTCHAVerified(true);
+          },
+          "expired-callback": () => {
+            console.log("reCAPTCHA expired");
+            setReCAPTCHAVerified(false);
+          },
+          "error-callback": (error: any) => {
+            console.error("reCAPTCHA error:", error);
+            setReCAPTCHAVerified(false);
+          },
+        }
+      );
 
       recaptchaVerifierRef.current.render().catch((error) => {
-        console.error("Error rendering reCAPTCHA:", error);
+        console.error("Failed to render reCAPTCHA:", error);
       });
     }
+
+    return () => {
+      if (recaptchaVerifierRef.current) {
+        recaptchaVerifierRef.current.clear();
+        recaptchaVerifierRef.current = null;
+      }
+    };
   }, [auth]);
 
+  // Trigger OTP sending when reCAPTCHA is verified
   useEffect(() => {
-    if (reCAPTCHAVerified) {
+    if (reCAPTCHAVerified && values.PNumber) {
       const phoneNumber = `+91${values.PNumber}`;
+      if (!recaptchaVerifierRef.current) {
+        console.error("reCAPTCHA verifier not initialized");
+        return;
+      }
       if (phoneNumber) {
         dispatch(
           phoneNumberUser({
@@ -74,9 +98,9 @@ const PhoneVerify: React.FC = () => {
     actionType: string
   ) => {
     if (actionType === "sendOTP") {
-      if (values.PNumber !== "") {
+      if (values.PNumber) {
         setShowOtpInput(true);
-        if (!appVerifier) {
+        if (!recaptchaVerifierRef.current) {
           console.error("reCAPTCHA not initialized");
           return;
         }
@@ -193,9 +217,8 @@ const PhoneVerify: React.FC = () => {
                     {!reCAPTCHAVerified ? (
                       <>
                         <div
-                          id="recaptcha"
-                          className="position-relative"
-                          style={{ zIndex: "111" }}
+                          id="recaptcha-container"
+                          data-sitekey="6LdH7-gqAAAAACYj6k_jxOpeW4y9rQ5oagLf4MLt"
                         ></div>
                       </>
                     ) : (
