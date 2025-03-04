@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../config/hooks";
 import FacebookLogin from "../components/FacebookLogin/FacebookLogin";
 import PhoneVerify from "../components/PhoneVerify/PhoneVerify";
 import { Input } from "../components/ui/Input";
+import { logout } from "../lib/slice/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,6 +26,14 @@ const Login = () => {
       setTimeout(() => navigate("/"), 1000);
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        dispatch(logout());
+      }, 3000);
+    }
+  }, [dispatch, errorMessage]);
 
   return (
     <>
@@ -67,7 +76,7 @@ const Login = () => {
                       <>
                         <div className="mb-3">
                           <label className="form-label">Email</label>
-                          <Input 
+                          <Input
                             type="text"
                             placeholder="Enter Email Address"
                             name="email"
@@ -89,7 +98,7 @@ const Login = () => {
                         </div>
                         <div className="mb-3">
                           <label className="form-label">Password</label>
-                          <Input 
+                          <Input
                             type="password"
                             className="form-control shadow-none bg-transparent border-0 border-bottom rounded-0 text-white"
                             placeholder="Enter Password"
