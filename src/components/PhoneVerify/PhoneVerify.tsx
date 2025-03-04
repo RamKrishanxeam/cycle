@@ -63,7 +63,7 @@ const PhoneVerify: React.FC = () => {
         recaptchaVerifierRef.current = null;
       }
     };
-  }, [auth]);
+  }, [auth, showOtpInput]);
 
   // Trigger OTP sending when reCAPTCHA is verified
   useEffect(() => {
