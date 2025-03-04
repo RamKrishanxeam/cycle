@@ -44,6 +44,8 @@ GithubAuth.setCustomParameters({
 });
 const yahooAuth = new OAuthProvider("yahoo.com"); 
 
+
+const signInWithYahooPopup = () => signInWithPopup(auth, yahooAuth);
 const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export {
@@ -52,6 +54,6 @@ export {
   db,
   facebookAuth,
   GithubAuth,
-  yahooAuth,
+  signInWithYahooPopup,
   signInWithGooglePopup,
 };

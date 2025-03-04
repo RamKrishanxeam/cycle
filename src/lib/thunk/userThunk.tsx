@@ -15,7 +15,7 @@ import {
   signInWithGooglePopup,
   facebookAuth,
   GithubAuth,
-  yahooAuth,
+  signInWithYahooPopup,
 } from "../../config/firebase";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -172,9 +172,9 @@ export const YahooLoginAuth = createAsyncThunk(
   "YahooLoginAuth",
   async (data, thunkAPI) => {
     try {
-      const response = await signInWithPopup(auth, yahooAuth);
+      const response = await signInWithYahooPopup();
       const user = response.user;
-      
+      console.log(user, "user");
       const credential = OAuthProvider.credentialFromResult(response);
       const accessToken = credential?.accessToken;
       const userDetails = Object.assign({}, user, { oAuth_token: accessToken });
