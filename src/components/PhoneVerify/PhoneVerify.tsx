@@ -216,7 +216,10 @@ const PhoneVerify: React.FC = () => {
                   <div className="d-flex gap-2 mb-3">
                     {!reCAPTCHAVerified ? (
                       <>
-                        <div id="recaptcha-container"></div>
+                        <div
+                          id="recaptcha-container"
+                          data-sitekey="6LdH7-gqAAAAACYj6k_jxOpeW4y9rQ5oagLf4MLt"
+                        ></div>
                       </>
                     ) : (
                       otp.map((_, index) => (
