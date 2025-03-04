@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
   signInWithPopup,
+  User,
 } from "firebase/auth";
 import {
   auth,
@@ -117,19 +118,20 @@ export const FacebookLoginAuth = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const result = await signInWithPopup(auth, facebookAuth);
-      const user = result.user;
+      const user = result.user as User;
       const credential = FacebookAuthProvider.credentialFromResult(result);
-      const accessToken = credential?.accessToken;
-      const userDetails = Object.assign({}, user, { oAuth_token: accessToken });
       if (user.uid) {
-        localStorage.setItem(
-          "userGoogleAndFacebook",
-          JSON.stringify(userDetails)
-        );
+        localStorage.setItem("userGoogleAndFacebook", JSON.stringify(user));
+        await (user as any).linkWithCredential(credential);
         return user;
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.code === "auth/account-exists-with-different-credential") {
+        console.log(
+          "Account exists with Google. Please sign in with Google first.",
+          error
+        );
+      }
       return thunkAPI.rejectWithValue(error);
     }
   }

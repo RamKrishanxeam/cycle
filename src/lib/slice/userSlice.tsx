@@ -113,7 +113,7 @@ export const userSlice = createSlice({
     builder.addCase(FacebookLoginAuth.rejected, (state, action) => {
       state.loading = false;
       state.errorMessage =
-        "";
+        "Account exists with Google. Please sign in with Google first";
     });
 
     // send OTP
