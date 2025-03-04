@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   GithubAuthProvider,
+  OAuthProvider,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -41,6 +42,16 @@ GithubAuth.addScope("repo");
 GithubAuth.setCustomParameters({
   allow_signup: "false",
 });
+const yahooAuth = new OAuthProvider("yahoo.com"); 
+
 const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
-export { app, auth, db, facebookAuth, GithubAuth, signInWithGooglePopup };
+export {
+  app,
+  auth,
+  db,
+  facebookAuth,
+  GithubAuth,
+  yahooAuth,
+  signInWithGooglePopup,
+};

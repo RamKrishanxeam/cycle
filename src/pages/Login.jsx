@@ -12,6 +12,7 @@ import PhoneVerify from "../components/PhoneVerify/PhoneVerify";
 import { Input } from "../components/ui/Input";
 import { logout } from "../lib/slice/userSlice";
 import { GithubLogin } from "../components/GithubLogin/GithubLogin";
+import YahooLogin from "../components/YahooLogin/YahooLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -158,6 +159,9 @@ const Login = () => {
                         </li>
                         <li className="social-item">
                           <GithubLogin />
+                        </li>
+                        <li className="social-item">
+                          <YahooLogin />
                         </li>
                       </ul>
                     </div>
