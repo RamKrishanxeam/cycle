@@ -1,7 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import yahoo from "../../assets/images/yahoo-login.svg";
-import { auth,  yahooAuth } from "../../config/firebase";
-import { signInWithPopup } from "firebase/auth";
 import { useAppDispatch, useAppSelector } from "../../config/hooks";
 import { useEffect } from "react";
 import { YahooLoginAuth } from "../../lib/thunk/userThunk";
@@ -17,7 +15,7 @@ const YahooLogin = () => {
       return () => clearTimeout(timer);
     }
   }, [user, navigate]);
-  
+
    const handleYahooLogin = () => {
     dispatch(YahooLoginAuth());
     };
