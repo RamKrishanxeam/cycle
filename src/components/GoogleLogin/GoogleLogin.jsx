@@ -11,12 +11,17 @@ export const GoogleLogin = () => {
 
   useEffect(() => {
     if (user) {
-      setTimeout(() => navigate("/"), 1000);
+      const timer = setTimeout(() => navigate("/"), 1000);
+      return () => clearTimeout(timer);
     }
   }, [user, navigate]);
 
+  const handleGoogleLogin = () => {
+    dispatch(logGoogleUser());
+  };
+
   return (
-    <Link to="" onClick={() => dispatch(logGoogleUser())}>
+    <Link to="" onClick={handleGoogleLogin}>
       <img src={google} alt="google" className="img-fluid" />
     </Link>
   );
