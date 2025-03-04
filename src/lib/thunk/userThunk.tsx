@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   FacebookAuthProvider,
+  GithubAuthProvider,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPhoneNumber,
@@ -12,6 +13,7 @@ import {
   db,
   signInWithGooglePopup,
   facebookAuth,
+  GithubAuth,
 } from "../../config/firebase";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -132,6 +134,33 @@ export const FacebookLoginAuth = createAsyncThunk(
           error
         );
       }
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const githubLoginAuth = createAsyncThunk(
+  "githubLoginAuth",
+  async (data, thunkAPI) => {
+    try {
+      const response = await signInWithPopup(auth, GithubAuth);
+      console.log(response, "response");
+
+      const user = response.user;
+      const credential = GithubAuthProvider.credentialFromResult(response);
+      const accessToken = credential?.accessToken;
+      const userDetails = Object.assign({}, user, { oAuth_token: accessToken });
+      console.log(userDetails, "userDetails");
+
+      if (user) {
+        localStorage.setItem(
+          "userGoogleAndFacebook",
+          JSON.stringify(userDetails)
+        );
+        return user;
+      }
+    } catch (error) {
+      console.error(error);
       return thunkAPI.rejectWithValue(error);
     }
   }

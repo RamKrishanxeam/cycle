@@ -5,7 +5,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  fetchSignInMethodsForEmail,
+  GithubAuthProvider,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -36,6 +36,11 @@ const app = initializeApp(firebaseConfig);
 const auth: Auth = getAuth();
 const db = getFirestore(app);
 const facebookAuth = new FacebookAuthProvider();
+const GithubAuth = new GithubAuthProvider();
+GithubAuth.addScope("repo");
+GithubAuth.setCustomParameters({
+  allow_signup: "false",
+});
 const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
-export { app, auth, db, facebookAuth, signInWithGooglePopup };
+export { app, auth, db, facebookAuth, GithubAuth, signInWithGooglePopup };
