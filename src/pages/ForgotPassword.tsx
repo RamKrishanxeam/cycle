@@ -1,19 +1,12 @@
-// const ForgotPassword = () => {
-//   return <>ForgotPassword</>;
-// };
-// export default ForgotPassword;
-
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../layout/Layout";
 import { Formik } from "formik";
-import { LoginSchema } from "../config/validation";
 import { LoginandSignup } from "../components/Form/Form";
-import { loginUser } from "../lib/thunk/userThunk";
-import { useAppDispatch, useAppSelector } from "../config/hooks";
+import { useAppDispatch } from "../config/hooks";
 import { Input } from "../components/ui/Input";
 import { auth } from "../config/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { useEffect } from "react";
+import { resetEmailSchema } from "../config/validation";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -23,7 +16,7 @@ const ForgotPassword = () => {
     const { email } = values;
     try {
       const actionCodeSettings = {
-        url: "http://localhost:3000/reset-password", // Custom URL
+        url: "http://localhost:3000/reset-password",
         handleCodeInApp: true,
       };
       console.log(actionCodeSettings, "actionCodeSettings");
@@ -50,6 +43,7 @@ const ForgotPassword = () => {
             <>
               <Formik
                 initialValues={{ email: "" }}
+                validationSchema={resetEmailSchema}
                 onSubmit={(values) => {
                   const { email } = values;
                   handlePasswordReset({ email });
@@ -74,6 +68,14 @@ const ForgotPassword = () => {
                         onBlur={handleBlur}
                         value={values.email}
                       />
+                      {errors.email && touched.email ? (
+                        <div className="error-message">
+                          <span className="material-symbols-outlined">
+                            error
+                          </span>
+                          {errors.email}
+                        </div>
+                      ) : null}
                     </div>
                     <button
                       type="submit"

@@ -45,3 +45,13 @@ export const addressSchema = Yup.object({
     .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
     .required("Phone number is required"),
 });
+
+export const resetEmailSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("This field is required"),
+});
+
+export const resetPasswordSchema = Yup.object().shape({
+  newPassword: Yup.string()
+    .min(6, "password must contain 6 and special")
+    .required("This field is required"),
+});
