@@ -13,6 +13,8 @@ import Cart from "./pages/Cart";
 import PaymentSuccessful from "./pages/PaymentSuccessful";
 import PaymentCencel from "./pages/PaymentCencel";
 import GoogleDrive from "./pages/GoogleDrive";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPasswordComplete from "./pages/ResetPasswordComplete";
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="sign-up" element={<Signup />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPasswordComplete />} />
         <Route path="cart" element={<Cart />} />
         <Route path="google-drive" element={<GoogleDrive />} />
         <Route path="account-show" element={<MyAccount />} />
